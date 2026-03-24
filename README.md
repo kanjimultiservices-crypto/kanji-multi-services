@@ -1,2 +1,2 @@
 # kanji-multi-services
-Application immobilière KANJI MULTI SERVICES - aménagement foncier , lotissement ,vente de terrains, maisons et location en Côte d’Ivoire
+Application Immobilière KANJI MULTI SERVICES - Aménagement Foncier , lotissement ,Vente de Terrains, Maisons et Location en Côte d’Ivoire
