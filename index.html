@@ -124,7 +124,7 @@ textarea{resize:vertical;min-height:80px;}
 .badge{background:var(--orange);color:white;border-radius:20px;padding:2px 8px;font-size:0.7rem;font-weight:700;}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,63,160,0.22);backdrop-filter:blur(4px);z-index:9980;align-items:center;justify-content:center;}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,63,160,0.22);z-index:99980;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal{background:white;border-radius:22px;padding:32px;width:90%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(26,63,160,0.22);animation:modalIn 0.3s cubic-bezier(.34,1.56,.64,1);}
 @keyframes modalIn{from{transform:scale(0.85);opacity:0;}to{transform:scale(1);opacity:1;}}
@@ -246,7 +246,7 @@ textarea{resize:vertical;min-height:80px;}
 .login-footer strong{color:#1A3FA0;}
 
 /* ADMIN LOCK */
-.admin-lock-overlay{position:fixed;inset:0;z-index:9990;background:rgba(10,20,60,0.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;}
+.admin-lock-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;background:rgba(10,20,60,0.55);display:flex;align-items:center;justify-content:center;}
 .admin-lock-card{background:white;border-radius:20px;padding:36px 32px 28px;width:90%;max-width:380px;box-shadow:0 24px 64px rgba(26,63,160,0.28);text-align:center;animation:adminIn 0.3s cubic-bezier(.34,1.56,.64,1);}
 @keyframes adminIn{from{transform:scale(0.85);opacity:0;}to{transform:scale(1);opacity:1;}}
 .admin-lock-icon{font-size:2.8rem;margin-bottom:10px;}
@@ -1231,14 +1231,13 @@ function openAdmin() {
   if (adminUnlocked) { 
     showPage('admin', {currentTarget: document.getElementById('nav-admin')}); 
   } else { 
-    pendingModal = 'admin'; 
+    pendingModal = 'admin';
     var overlay = document.getElementById('admin-lock-overlay');
     if (overlay) {
-      overlay.style.display = 'flex';
-      overlay.style.zIndex = '9990';
+      overlay.style.cssText = 'display:flex!important;position:fixed!important;top:0!important;left:0!important;width:100%!important;height:100%!important;z-index:99999!important;background:rgba(10,20,60,0.75)!important;align-items:center!important;justify-content:center!important;';
     }
     var inp = document.getElementById('admin-pwd-input');
-    if (inp) { inp.value = ''; setTimeout(function(){ inp.focus(); }, 150); }
+    if (inp) { inp.value = ''; setTimeout(function(){ inp.focus(); }, 200); }
     var err = document.getElementById('admin-lock-error');
     if (err) err.classList.remove('show');
   }
@@ -1268,7 +1267,10 @@ function lockAdmin() {
 }
 function checkAdminAction(modalId) {
   if (adminUnlocked) { openModal(modalId); }
-  else { pendingModal = modalId; document.getElementById('admin-lock-overlay').style.display='flex'; document.getElementById('admin-pwd-input').value=''; setTimeout(function(){document.getElementById('admin-pwd-input').focus();},100); }
+  else { 
+    pendingModal = modalId; 
+    openAdmin();
+  }
 }
 function unlockSecretPage(page) {
   if (adminUnlocked) { showSecretContent(page); return; }
@@ -1315,8 +1317,20 @@ function changeAdminPwd() {
 }
 
 // ===== MODALS =====
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openModal(id) { 
+  var el = document.getElementById(id);
+  if (el) {
+    el.style.display = 'flex';
+    el.classList.add('open');
+  }
+}
+function closeModal(id) { 
+  var el = document.getElementById(id);
+  if (el) {
+    el.classList.remove('open');
+    el.style.display = 'none';
+  }
+}
 document.addEventListener('click',function(e){ if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); });
 
 // ===== GALLERY =====
