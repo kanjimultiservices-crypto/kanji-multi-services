@@ -124,7 +124,7 @@ textarea{resize:vertical;min-height:80px;}
 .badge{background:var(--orange);color:white;border-radius:20px;padding:2px 8px;font-size:0.7rem;font-weight:700;}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,63,160,0.22);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,63,160,0.22);backdrop-filter:blur(4px);z-index:9980;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal{background:white;border-radius:22px;padding:32px;width:90%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(26,63,160,0.22);animation:modalIn 0.3s cubic-bezier(.34,1.56,.64,1);}
 @keyframes modalIn{from{transform:scale(0.85);opacity:0;}to{transform:scale(1);opacity:1;}}
@@ -246,7 +246,7 @@ textarea{resize:vertical;min-height:80px;}
 .login-footer strong{color:#1A3FA0;}
 
 /* ADMIN LOCK */
-.admin-lock-overlay{position:fixed;inset:0;z-index:500;background:rgba(10,20,60,0.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;}
+.admin-lock-overlay{position:fixed;inset:0;z-index:9990;background:rgba(10,20,60,0.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;}
 .admin-lock-card{background:white;border-radius:20px;padding:36px 32px 28px;width:90%;max-width:380px;box-shadow:0 24px 64px rgba(26,63,160,0.28);text-align:center;animation:adminIn 0.3s cubic-bezier(.34,1.56,.64,1);}
 @keyframes adminIn{from{transform:scale(0.85);opacity:0;}to{transform:scale(1);opacity:1;}}
 .admin-lock-icon{font-size:2.8rem;margin-bottom:10px;}
@@ -560,7 +560,7 @@ textarea{resize:vertical;min-height:80px;}
       <a href="vitrine.html" target="_blank" class="btn-site-public">🌐 Site public</a>
       <span id="topbar-date" style="font-size:0.82rem;color:var(--gray);"></span>
       <span id="sync-indicator" style="font-size:0.72rem;background:#e8f8ef;color:#27ae60;padding:4px 10px;border-radius:6px;font-weight:700;">⚡ En ligne</span>
-      <button onclick="openAdmin()" style="font-size:0.82rem;background:var(--light);padding:6px 14px;border-radius:8px;font-weight:700;color:var(--blue);border:2px solid var(--blue);cursor:pointer;font-family:'Lato',sans-serif;">🔐 Espace Admin</button>
+      <button onclick="openAdmin()" onclick="openAdmin()" style="font-size:0.82rem;background:var(--light);padding:6px 14px;border-radius:8px;font-weight:700;color:var(--blue);border:2px solid var(--blue);cursor:pointer;font-family:'Lato',sans-serif;">🔐 Espace Admin</button>
     </div>
   </div>
 
@@ -1133,26 +1133,32 @@ var tempGalleries = {};
 async function loadAll() {
   showLoader(true);
   try {
-    const [t, l, m, v, c, ct, p, a] = await Promise.all([
+    const results = await Promise.all([
       supa.getAll('terrains'), supa.getAll('lotissement'),
       supa.getAll('maisons'), supa.getAll('ventes'),
       supa.getAll('clients'), supa.getAll('contrats'),
       supa.getAll('paiements'), supa.getAll('activites')
     ]);
-    db.terrains    = t || [];
-    db.lotissement = l || [];
-    db.maisons     = m || [];
-    db.ventes      = v || [];
-    db.clients     = c || [];
-    db.contrats    = ct || [];
-    db.paiements   = p || [];
-    db.activites   = a || [];
+    db.terrains    = results[0] || [];
+    db.lotissement = results[1] || [];
+    db.maisons     = results[2] || [];
+    db.ventes      = results[3] || [];
+    db.clients     = results[4] || [];
+    db.contrats    = results[5] || [];
+    db.paiements   = results[6] || [];
+    db.activites   = results[7] || [];
+    console.log('✅ Données Supabase chargées:', {
+      terrains: db.terrains.length,
+      lotissement: db.lotissement.length,
+      maisons: db.maisons.length
+    });
   } catch(e) {
-    console.error('Erreur chargement:', e);
+    console.error('Erreur chargement Supabase:', e);
     showToast('❌ Erreur connexion Supabase', 'error');
   }
   showLoader(false);
-  updateStats(); renderAll();
+  updateStats(); 
+  renderAll();
 }
 
 function showLoader(on) {
@@ -1222,8 +1228,20 @@ function updateDate() {
 
 // ===== ADMIN AUTH =====
 function openAdmin() {
-  if (adminUnlocked) { showPage('admin', {currentTarget: document.getElementById('nav-admin')}); }
-  else { pendingModal = 'admin'; document.getElementById('admin-lock-overlay').style.display='flex'; document.getElementById('admin-pwd-input').value=''; setTimeout(function(){document.getElementById('admin-pwd-input').focus();},100); }
+  if (adminUnlocked) { 
+    showPage('admin', {currentTarget: document.getElementById('nav-admin')}); 
+  } else { 
+    pendingModal = 'admin'; 
+    var overlay = document.getElementById('admin-lock-overlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      overlay.style.zIndex = '9990';
+    }
+    var inp = document.getElementById('admin-pwd-input');
+    if (inp) { inp.value = ''; setTimeout(function(){ inp.focus(); }, 150); }
+    var err = document.getElementById('admin-lock-error');
+    if (err) err.classList.remove('show');
+  }
 }
 function checkAdminPwd() {
   var val = document.getElementById('admin-pwd-input').value;
