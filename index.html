@@ -786,8 +786,15 @@ async function db_get(table){
 async function db_insert(table,data){
   try{
     var r=await fetch(SURL+'/rest/v1/'+table,{method:'POST',headers:{'apikey':SKEY,'Authorization':'Bearer '+SKEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(data)});
-    return r.ok?(await r.json()):null;
-  }catch(e){return null;}
+    if(r.ok){
+      var json=await r.json();
+      return Array.isArray(json)?json:[json];
+    } else {
+      var err=await r.text();
+      console.error('Supabase error:',err);
+      return null;
+    }
+  }catch(e){console.error('Insert error:',e);return null;}
 }
 async function db_delete(table,id){
   try{
@@ -1017,13 +1024,24 @@ function renderAll(){renderTerrains();renderLots();renderMaisons();renderVentes(
 // ===== TERRAINS =====
 async function saveTerrain(){
   var photos=getGallery('t-gallery');
-  var safePhotos=photos.filter(function(p){return p.startsWith('http')||p.length<500000;});
+  var safePhotos=photos.filter(function(p){return p&&p.startsWith('http');});
   var item={ref:document.getElementById('t-ref').value,type:document.getElementById('t-type').value,loc:document.getElementById('t-loc').value,sup:document.getElementById('t-sup').value||null,prix:document.getElementById('t-prix').value||null,statut:document.getElementById('t-statut').value,lot:document.getElementById('t-lot').value,ilot:document.getElementById('t-ilot').value,notes:document.getElementById('t-notes').value,photos:safePhotos};
   if(!item.ref){alert('Référence obligatoire!');return;}
   toast('💾 Enregistrement...','ok');
-  var res=await db_insert('terrains',item);
-  if(res){DB.terrains=await db_get('terrains');await addActivity('Terrain ajouté : <strong>'+item.ref+'</strong>');updateStats();renderTerrains();closeModal('modalTerrain');toast('✅ Terrain enregistré!','ok');['t-ref','t-loc','t-sup','t-prix','t-lot','t-ilot','t-notes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});}
-  else toast('❌ Erreur - essayez sans photo','err');
+  try{
+    var res=await db_insert('terrains',item);
+    if(res&&res.length>0){
+      DB.terrains=await db_get('terrains');
+      await addActivity('Terrain ajouté : <strong>'+item.ref+'</strong>');
+      updateStats();renderTerrains();closeModal('modalTerrain');
+      toast('✅ Terrain enregistré!','ok');
+      ['t-ref','t-loc','t-sup','t-prix','t-lot','t-ilot','t-notes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+    } else {
+      toast('❌ Erreur enregistrement','err');
+    }
+  }catch(e){
+    toast('❌ Erreur: '+e.message,'err');
+  }
 }
 function renderTerrains(data){
   data=data||DB.terrains;var tb=document.getElementById('tb-terrains');if(!tb)return;
@@ -1039,13 +1057,24 @@ function filterTerrains(){var q=document.getElementById('s-terrains').value.toLo
 // ===== LOTISSEMENT =====
 async function saveLot(){
   var photos=getGallery('l-gallery');
-  var safePhotos=photos.filter(function(p){return p.startsWith('http')||p.length<500000;});
+  var safePhotos=photos.filter(function(p){return p&&p.startsWith('http');});
   var item={num:document.getElementById('l-num').value,ilot:document.getElementById('l-ilot').value,programme:document.getElementById('l-prog').value,zone:document.getElementById('l-zone').value,sup:document.getElementById('l-sup').value||null,prix:document.getElementById('l-prix').value||null,statut:document.getElementById('l-statut').value,acquereur:document.getElementById('l-acq').value,notes:document.getElementById('l-notes').value,photos:safePhotos};
   if(!item.num){alert('N° Lot obligatoire!');return;}
   toast('💾 Enregistrement...','ok');
-  var res=await db_insert('lotissement',item);
-  if(res){DB.lotissement=await db_get('lotissement');await addActivity('Lot ajouté : <strong>'+item.num+'</strong>');updateStats();renderLots();closeModal('modalLot');toast('✅ Lot enregistré!','ok');['l-num','l-ilot','l-prog','l-zone','l-sup','l-prix','l-acq','l-notes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});}
-  else toast('❌ Erreur - essayez sans photo','err');
+  try{
+    var res=await db_insert('lotissement',item);
+    if(res&&res.length>0){
+      DB.lotissement=await db_get('lotissement');
+      await addActivity('Lot ajouté : <strong>'+item.num+'</strong>');
+      updateStats();renderLots();closeModal('modalLot');
+      toast('✅ Lot enregistré!','ok');
+      ['l-num','l-ilot','l-prog','l-zone','l-sup','l-prix','l-acq','l-notes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+    } else {
+      toast('❌ Erreur enregistrement','err');
+    }
+  }catch(e){
+    toast('❌ Erreur: '+e.message,'err');
+  }
 }
 function renderLots(data){
   data=data||DB.lotissement;var tb=document.getElementById('tb-lots');if(!tb)return;
@@ -1061,13 +1090,24 @@ function filterLots(){var q=document.getElementById('s-lots').value.toLowerCase(
 // ===== MAISONS =====
 async function saveMaison(){
   var photos=getGallery('m-gallery');
-  var safePhotos=photos.filter(function(p){return p.startsWith('http')||p.length<500000;});
+  var safePhotos=photos.filter(function(p){return p&&p.startsWith('http');});
   var item={ref:document.getElementById('m-ref').value,type:document.getElementById('m-type').value,adresse:document.getElementById('m-adr').value,pieces:document.getElementById('m-pieces').value||null,loyer:document.getElementById('m-loyer').value||null,statut:document.getElementById('m-statut').value,locataire:document.getElementById('m-loc').value,description:document.getElementById('m-desc').value,photos:safePhotos};
   if(!item.ref){alert('Référence obligatoire!');return;}
   toast('💾 Enregistrement...','ok');
-  var res=await db_insert('maisons',item);
-  if(res){DB.maisons=await db_get('maisons');await addActivity('Maison ajoutée : <strong>'+item.ref+'</strong>');updateStats();renderMaisons();closeModal('modalMaison');toast('✅ Maison enregistrée!','ok');['m-ref','m-adr','m-pieces','m-loyer','m-loc','m-desc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});}
-  else toast('❌ Erreur - essayez sans photo','err');
+  try{
+    var res=await db_insert('maisons',item);
+    if(res&&res.length>0){
+      DB.maisons=await db_get('maisons');
+      await addActivity('Maison ajoutée : <strong>'+item.ref+'</strong>');
+      updateStats();renderMaisons();closeModal('modalMaison');
+      toast('✅ Maison enregistrée!','ok');
+      ['m-ref','m-adr','m-pieces','m-loyer','m-loc','m-desc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+    } else {
+      toast('❌ Erreur enregistrement','err');
+    }
+  }catch(e){
+    toast('❌ Erreur: '+e.message,'err');
+  }
 }
 function renderMaisons(data){
   data=data||DB.maisons;var tb=document.getElementById('tb-maisons');if(!tb)return;
@@ -1083,14 +1123,24 @@ function filterMaisons(){var q=document.getElementById('s-maisons').value.toLowe
 // ===== VENTES =====
 async function saveVente(){
   var photos=getGallery('v-gallery');
-  // Limiter photos à URL Supabase ou base64 compressée
-  var safePhotos = photos.filter(function(p){return p.startsWith('http')||p.length<500000;});
+  var safePhotos=photos.filter(function(p){return p&&p.startsWith('http');});
   var item={ref:document.getElementById('v-ref').value,type:document.getElementById('v-type').value,adresse:document.getElementById('v-adr').value,pieces:document.getElementById('v-pieces').value||null,sup:document.getElementById('v-sup').value||null,prix:document.getElementById('v-prix').value||null,statut:document.getElementById('v-statut').value,description:document.getElementById('v-desc').value,photos:safePhotos};
   if(!item.ref){alert('Référence obligatoire!');return;}
   toast('💾 Enregistrement...','ok');
-  var res=await db_insert('ventes',item);
-  if(res){DB.ventes=await db_get('ventes');await addActivity('Maison à vendre : <strong>'+item.ref+'</strong>');updateStats();renderVentes();closeModal('modalVente');toast('✅ Enregistré!','ok');['v-ref','v-adr','v-pieces','v-sup','v-prix','v-desc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});}
-  else toast('❌ Erreur Supabase - photo trop lourde, essayez sans photo','err');
+  try{
+    var res=await db_insert('ventes',item);
+    if(res&&res.length>0){
+      DB.ventes=await db_get('ventes');
+      await addActivity('Maison à vendre : <strong>'+item.ref+'</strong>');
+      updateStats();renderVentes();closeModal('modalVente');
+      toast('✅ Maison enregistrée!','ok');
+      ['v-ref','v-adr','v-pieces','v-sup','v-prix','v-desc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+    } else {
+      toast('❌ Erreur enregistrement','err');
+    }
+  }catch(e){
+    toast('❌ Erreur: '+e.message,'err');
+  }
 }
 function renderVentes(data){
   data=data||DB.ventes;var tb=document.getElementById('tb-ventes');if(!tb)return;
