@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#F7941D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KANJI">
 <title>KANJI MULTI SERVICES – Gestion Immobilière</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -511,7 +517,8 @@ tbody td{padding:10px 12px}
     <div class="topbar-right">
       <span class="t-date" id="topDate"></span>
       <span class="t-status" id="topStatus">⚡ En ligne</span>
-      <button class="t-admin-btn" onclick="openAdmin('page')">🔐 Espace Admin</button>
+      <button id="install-btn" onclick="installApp()" style="display:none;background:linear-gradient(135deg,#27ae60,#1e8449);color:white;border:none;padding:8px 16px;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;align-items:center;gap:6px;font-family:Inter,sans-serif;">📲 Installer l'app</button>
+    <button class="t-admin-btn" onclick="openAdmin('page')">🔐 Espace Admin</button>
     </div>
   </div>
 
@@ -1221,6 +1228,38 @@ async function resetData(key){
 updateDate();
 loadAll();
 setInterval(loadAll,60000);
+
+// ===== PWA SERVICE WORKER =====
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js')
+      .then(function(reg){ console.log('✅ PWA installée'); })
+      .catch(function(err){ console.log('SW error:', err); });
+  });
+}
+
+// ===== BOUTON INSTALLATION PWA =====
+var deferredPrompt;
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  deferredPrompt = e;
+  var installBtn = document.getElementById('install-btn');
+  if(installBtn) installBtn.style.display = 'flex';
+});
+window.addEventListener('appinstalled', function(){
+  var installBtn = document.getElementById('install-btn');
+  if(installBtn) installBtn.style.display = 'none';
+  toast('✅ KANJI installé sur votre téléphone!','ok');
+});
+function installApp(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(result){
+      if(result.outcome==='accepted') toast('✅ Installation en cours...','ok');
+      deferredPrompt = null;
+    });
+  }
+}
 </script>
 </body>
 </html>
