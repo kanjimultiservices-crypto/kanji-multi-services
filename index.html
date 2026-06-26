@@ -592,7 +592,7 @@ tbody td{padding:10px 12px}
         <div class="stat-card purple"><div class="s-icon">🏗️</div><div class="s-info"><div class="s-label">Lots Lotissement</div><div class="s-val" id="st-lots">0</div><div class="s-sub" style="color:#9b59b6">↑ disponibles</div></div></div>
         <div class="stat-card blue"><div class="s-icon">🏘️</div><div class="s-info"><div class="s-label">Maisons en Location</div><div class="s-val" id="st-maisons">0</div><div class="s-sub" style="color:var(--bl)">↑ libres</div></div></div>
         <div class="stat-card green"><div class="s-icon">🏠</div><div class="s-info"><div class="s-label">Maisons à Vendre</div><div class="s-val" id="st-ventes">0</div><div class="s-sub" style="color:var(--gr)">↑ disponibles</div></div></div>
-        <div class="stat-card gray"><div class="s-icon">💰</div><div class="s-info"><div class="s-label">Total Encaissé</div><div class="s-val" id="st-revenus" style="font-size:1.2rem">0</div><div class="s-sub" style="color:var(--gy)">FCFA</div></div></div>
+        <div class="stat-card gray" id="card-revenus"><div class="s-icon">💰</div><div class="s-info"><div class="s-label">Total Encaissé</div><div class="s-val" id="st-revenus" style="font-size:1.2rem;filter:blur(6px);user-select:none">••••••</div><div class="s-sub" style="color:var(--gy)" id="revenus-label">🔐 Admin seulement</div></div></div>
       </div>
       <div class="card-title" style="font-family:'Playfair Display',serif;font-weight:800;font-size:0.95rem;color:var(--bl);margin-bottom:14px;display:flex;align-items:center;gap:8px">Actions Rapides <span style="flex:1;height:2px;background:linear-gradient(to right,var(--or),transparent);border-radius:2px"></span></div>
       <div class="qa-grid">
@@ -968,6 +968,11 @@ function submitAdmin(){
     }
     adminTarget=null;
     toast('✅ Connecté en tant qu\'Admin','ok');
+    // Afficher le montant total
+    var rv = document.getElementById('st-revenus');
+    if(rv) rv.style.filter = 'none';
+    var rl = document.getElementById('revenus-label');
+    if(rl) rl.textContent = 'FCFA';
   } else {
     document.getElementById('adminErr').classList.add('show');
     setTimeout(function(){document.getElementById('adminErr').classList.remove('show');},2500);
@@ -982,6 +987,10 @@ function lockAdmin(){
   document.querySelectorAll('.admin-nav').forEach(function(el){el.style.display='none';});
   goPage('dashboard',document.querySelector('.nav-item'));
   toast('🔒 Admin verrouillé','ok');
+  var rv = document.getElementById('st-revenus');
+  if(rv){ rv.style.filter='blur(6px)'; rv.textContent='••••••'; }
+  var rl = document.getElementById('revenus-label');
+  if(rl) rl.textContent = '🔐 Admin seulement';
 }
 function needAdmin(modalId){
   if(isAdmin){openModal(modalId);}
