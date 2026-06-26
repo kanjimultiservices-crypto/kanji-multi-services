@@ -757,7 +757,7 @@ tbody td{padding:10px 12px}
       <div class="secret-lock" id="paiements-lock"><div class="s-icon">🔐</div><div class="s-title">Accès Restreint</div><div class="s-sub">Section réservée à l'administration.</div><button class="s-btn" onclick="openAdmin('paiements')">🔑 Accéder</button></div>
       <div id="paiements-content" style="display:none">
         <div class="page-header"><div class="page-title">💰 Paiements</div><button class="btn btn-primary" onclick="openModal('modalPaiement')">+ Enregistrer</button></div>
-        <div class="card tbl-wrap"><table><thead><tr><th>#</th><th>N° Reçu</th><th>Client</th><th>Bien</th><th>Montant</th><th>Mode</th><th>Date</th><th>Note</th></tr></thead><tbody id="tb-paiements"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--gy)">💰 Aucun paiement</td></tr></tbody></table></div>
+        <div class="card tbl-wrap"><table><thead><tr><th>#</th><th>N° Reçu</th><th>Client</th><th>Bien</th><th>Montant</th><th>Mode</th><th>Date</th><th>Note</th><th>Action</th></tr></thead><tbody id="tb-paiements"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--gy)">💰 Aucun paiement</td></tr></tbody></table></div>
       </div>
     </div>
 
@@ -1283,8 +1283,19 @@ function renderPaiements(data){
   data=data||DB.paiements;var tb=document.getElementById('tb-paiements');if(!tb)return;
   if(!data.length){tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--gy)">💰 Aucun paiement</td></tr>';return;}
   tb.innerHTML=data.map(function(p,i){
-    return '<tr><td>'+(i+1)+'</td><td><strong>'+(p.recu||'—')+'</strong></td><td>'+(p.client||'')+'</td><td>'+(p.bien||'—')+'</td><td><strong>'+Number(p.montant||0).toLocaleString()+' FCFA</strong></td><td>'+(p.mode||'')+'</td><td>'+(p.date_paiement||'—')+'</td><td>'+(p.note||'—')+'</td></tr>';
+    return '<tr><td>'+(i+1)+'</td><td><strong>'+(p.recu||'—')+'</strong></td><td>'+(p.client||'')+'</td><td>'+(p.bien||'—')+'</td><td><strong>'+Number(p.montant||0).toLocaleString()+' FCFA</strong></td><td>'+(p.mode||'')+'</td><td>'+(p.date_paiement||'—')+'</td><td>'+(p.note||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="delPaiement('+p.id+')">🗑️</button></td></tr>';
   }).join('');
+}
+
+// ===== DELETE PAIEMENT =====
+async function delPaiement(id){
+  if(!confirm('Supprimer ce paiement ?'))return;
+  await db_delete('paiements',id);
+  DB.paiements=await db_get('paiements');
+  updateStats();
+  renderPaiements();
+  updateAdminStats();
+  toast('✅ Paiement supprimé','ok');
 }
 
 // ===== RAPPORTS =====
