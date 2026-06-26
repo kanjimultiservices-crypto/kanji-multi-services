@@ -1352,20 +1352,20 @@ function searchBiens() {
 
   if(!results.length) {
     c.className = '';
-    c.innerHTML = '<div class="no-results"><div class="nr-icon">🔍</div><div class="nr-title">Aucun bien trouvé</div><p style="color:var(--gy);font-size:0.85rem">Essayez avec d'autres mots clés ou contactez-nous directement</p></div>';
+    c.innerHTML = '<div class="no-results"><div class="nr-icon">🔍</div><div class="nr-title">Aucun bien trouvé</div><p style="color:var(--gy);font-size:0.85rem">Essayez avec d\'autres mots clés ou contactez-nous directement</p></div>';
     return;
   }
 
   c.className = 'biens-grid';
   c.innerHTML = results.map(function(b) {
     var img = (b.photos && b.photos.length) 
-      ? '<img class="bien-img" src="'+b.photos[0]+'" alt="'+b.title+'" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">'+'<div class="bien-img-placeholder" style="display:none">'+b.ico+'</div>'
+      ? '<img class="bien-img" src="'+b.photos[0]+'" alt="'+b.title+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'+'<div class="bien-img-placeholder" style="display:none">'+b.ico+'</div>'
       : '<div class="bien-img-placeholder">'+b.ico+'</div>';
     var prixStr = b.prix ? Number(b.prix).toLocaleString()+' FCFA'+(b.isLoyer?'/mois':'') : 'Prix sur demande';
     var details = '';
     if(b.pieces) details += '<span class="bien-detail">🛏️ '+b.pieces+' pièces</span>';
     if(b.sup) details += '<span class="bien-detail">📐 '+Number(b.sup).toLocaleString()+' m²</span>';
-    return '<div class="bien-card" onclick="contactBien(''+b.title+'')">'
+    return '<div class="bien-card" onclick="contactBien(\'' +b.title+ '\')">'
       +img
       +'<div class="bien-body">'
       +'<div class="bien-type">'+b.type+'</div>'
@@ -1379,7 +1379,7 @@ function searchBiens() {
 }
 
 function contactBien(ref) {
-  var msg = encodeURIComponent('Bonjour KANJI MULTI SERVICES, je suis intéressé(e) par le bien référence: '+ref+'. Pouvez-vous me donner plus d'informations ?');
+  var msg = encodeURIComponent('Bonjour KANJI MULTI SERVICES, je suis interesse par le bien reference: '+ref+'. Pouvez-vous me donner plus d informations ?');
   window.open('https://wa.me/2250799630206?text='+msg, '_blank');
 }
 
