@@ -1118,7 +1118,7 @@ function renderAll(){renderTerrains();renderLots();renderMaisons();renderVentes(
 // ===== TERRAINS =====
 async function saveTerrain(){
   var photos=getGallery('t-gallery');
-  var safePhotos=photos.filter(function(p){return p&&p.startsWith('http');});
+  var safePhotos=photos.slice(0,3);
   var item={ref:document.getElementById('t-ref').value,type:document.getElementById('t-type').value,loc:document.getElementById('t-loc').value,sup:document.getElementById('t-sup').value||null,prix:document.getElementById('t-prix').value||null,statut:document.getElementById('t-statut').value,lot:document.getElementById('t-lot').value,ilot:document.getElementById('t-ilot').value,notes:document.getElementById('t-notes').value,photos:safePhotos};
   if(!item.ref){alert('Référence obligatoire!');return;}
   toast('💾 Enregistrement...','ok');
@@ -1152,7 +1152,7 @@ function filterTerrains(){var q=document.getElementById('s-terrains').value.toLo
 // ===== LOTISSEMENT =====
 async function saveLot(){
   var photos=getGallery('l-gallery');
-  var safePhotos=photos.filter(function(p){return p&&p.startsWith('http');});
+  var safePhotos=photos.slice(0,3);
   var item={num:document.getElementById('l-num').value,ilot:document.getElementById('l-ilot').value,programme:document.getElementById('l-prog').value,zone:document.getElementById('l-zone').value,sup:document.getElementById('l-sup').value||null,prix:document.getElementById('l-prix').value||null,statut:document.getElementById('l-statut').value,acquereur:document.getElementById('l-acq').value,notes:document.getElementById('l-notes').value,photos:safePhotos};
   if(!item.num){alert('N° Lot obligatoire!');return;}
   toast('💾 Enregistrement...','ok');
@@ -1185,7 +1185,7 @@ function filterLots(){var q=document.getElementById('s-lots').value.toLowerCase(
 // ===== MAISONS =====
 async function saveMaison(){
   var photos=getGallery('m-gallery');
-  var safePhotos=photos.filter(function(p){return p&&p.startsWith('http');});
+  var safePhotos=photos.slice(0,3);
   var item={ref:document.getElementById('m-ref').value,type:document.getElementById('m-type').value,adresse:document.getElementById('m-adr').value,pieces:document.getElementById('m-pieces').value||null,loyer:document.getElementById('m-loyer').value||null,statut:document.getElementById('m-statut').value,locataire:document.getElementById('m-loc').value,description:document.getElementById('m-desc').value,photos:safePhotos};
   if(!item.ref){alert('Référence obligatoire!');return;}
   toast('💾 Enregistrement...','ok');
@@ -1219,7 +1219,7 @@ function filterMaisons(){var q=document.getElementById('s-maisons').value.toLowe
 // ===== VENTES =====
 async function saveVente(){
   var photos=getGallery('v-gallery');
-  var safePhotos=photos.filter(function(p){return p&&p.startsWith('http');});
+  var safePhotos=photos.slice(0,3);
   var item={ref:document.getElementById('v-ref').value,type:document.getElementById('v-type').value,adresse:document.getElementById('v-adr').value,pieces:document.getElementById('v-pieces').value||null,sup:document.getElementById('v-sup').value||null,prix:document.getElementById('v-prix').value||null,statut:document.getElementById('v-statut').value,description:document.getElementById('v-desc').value,photos:safePhotos};
   if(!item.ref){alert('Référence obligatoire!');return;}
   toast('💾 Enregistrement...','ok');
