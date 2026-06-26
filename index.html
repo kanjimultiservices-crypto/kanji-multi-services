@@ -744,6 +744,15 @@ tbody td{padding:10px 12px}
           </div>
         </div>
       </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">📧 Notifications Email</div>
+        <div style="background:var(--bg);border-radius:10px;padding:16px;">
+          <p style="font-size:0.82rem;color:var(--gy);margin-bottom:8px;">✅ Notifications actives sur <strong>kanjimultiservices@gmail.com</strong></p>
+          <p style="font-size:0.82rem;color:var(--gy);margin-bottom:12px;">Tu recevras un email automatique quand un bien ou client est ajouté.</p>
+          <div id="email-status" style="font-size:0.82rem;margin-bottom:10px;"></div>
+          <button class="btn btn-primary" onclick="testEmail()">🧪 Envoyer email test</button>
+        </div>
+      </div>
       <div style="margin-top:14px">
         <button class="btn btn-outline" onclick="lockAdmin()">🔒 Verrouiller Admin</button>
       </div>
@@ -1040,6 +1049,7 @@ async function saveTerrain(){
     if(res&&res.length>0){
       DB.terrains=await db_get('terrains');
       await addActivity('Terrain ajouté : <strong>'+item.ref+'</strong>');
+      sendNotification('Nouveau terrain ajouté', 'Référence: '+item.ref+' | Localisation: '+item.loc+' | Prix: '+item.prix+' FCFA | Statut: '+item.statut);
       updateStats();renderTerrains();closeModal('modalTerrain');
       toast('✅ Terrain enregistré!','ok');
       ['t-ref','t-loc','t-sup','t-prix','t-lot','t-ilot','t-notes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
@@ -1106,6 +1116,7 @@ async function saveMaison(){
     if(res&&res.length>0){
       DB.maisons=await db_get('maisons');
       await addActivity('Maison ajoutée : <strong>'+item.ref+'</strong>');
+      sendNotification('Nouvelle maison ajoutée', 'Référence: '+item.ref+' | Adresse: '+item.adresse+' | Loyer: '+item.loyer+' FCFA/mois | Statut: '+item.statut);
       updateStats();renderMaisons();closeModal('modalMaison');
       toast('✅ Maison enregistrée!','ok');
       ['m-ref','m-adr','m-pieces','m-loyer','m-loc','m-desc'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
@@ -1165,7 +1176,8 @@ async function saveClient(){
   var item={nom:document.getElementById('c-nom').value,prenom:document.getElementById('c-prenom').value,tel:document.getElementById('c-tel').value,email:document.getElementById('c-email').value,type:document.getElementById('c-type').value,statut:document.getElementById('c-statut').value,notes:document.getElementById('c-notes').value,photos:[]};
   if(!item.nom){alert('Nom obligatoire!');return;}
   var res=await db_insert('clients',item);
-  if(res){DB.clients=await db_get('clients');await addActivity('Client ajouté : <strong>'+item.nom+' '+item.prenom+'</strong>');renderClients();updateAdminStats();closeModal('modalClient');toast('✅ Client enregistré!','ok');['c-nom','c-prenom','c-tel','c-email','c-notes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});}
+  if(res){DB.clients=await db_get('clients');await addActivity('Client ajouté : <strong>'+item.nom+' '+item.prenom+'</strong>');
+      sendNotification('Nouveau client', 'Nom: '+item.nom+' '+item.prenom+' | Tél: '+item.tel+' | Type: '+item.type);renderClients();updateAdminStats();closeModal('modalClient');toast('✅ Client enregistré!','ok');['c-nom','c-prenom','c-tel','c-email','c-notes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});}
   else toast('❌ Erreur Supabase','err');
 }
 function renderClients(data){
@@ -1185,7 +1197,8 @@ async function savePaiement(){
   var item={recu:document.getElementById('p-recu').value,client:document.getElementById('p-client').value,bien:document.getElementById('p-bien').value,montant:document.getElementById('p-montant').value||null,mode:document.getElementById('p-mode').value,date_paiement:document.getElementById('p-date').value||null,note:document.getElementById('p-note').value};
   if(!item.montant){alert('Montant obligatoire!');return;}
   var res=await db_insert('paiements',item);
-  if(res){DB.paiements=await db_get('paiements');await addActivity('Paiement : <strong>'+Number(item.montant).toLocaleString()+' FCFA</strong> de '+item.client);updateStats();renderPaiements();updateAdminStats();closeModal('modalPaiement');toast('✅ Paiement enregistré!','ok');['p-recu','p-client','p-bien','p-montant','p-date','p-note'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});}
+  if(res){DB.paiements=await db_get('paiements');await addActivity('Paiement : <strong>'+Number(item.montant).toLocaleString()+' FCFA</strong> de '+item.client);
+      sendNotification('Paiement reçu', 'Client: '+item.client+' | Montant: '+Number(item.montant).toLocaleString()+' FCFA | Mode: '+item.mode+' | N° Reçu: '+item.recu);updateStats();renderPaiements();updateAdminStats();closeModal('modalPaiement');toast('✅ Paiement enregistré!','ok');['p-recu','p-client','p-bien','p-montant','p-date','p-note'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});}
   else toast('❌ Erreur Supabase','err');
 }
 function renderPaiements(data){
@@ -1213,6 +1226,15 @@ function renderRapports(){
     +'</ul>';
 }
 
+// ===== EMAIL FUNCTIONS =====
+async function testEmail() {
+  var msg = document.getElementById('email-status');
+  if(msg) { msg.style.color='#e67e22'; msg.textContent='📤 Envoi en cours...'; }
+  await sendNotification('Test de notification', 'Ceci est un test de notification KANJI MULTI SERVICES. Tout fonctionne correctement! ✅');
+  if(msg) { msg.style.color='#27ae60'; msg.textContent='✅ Email test envoyé sur kanjimultiservices@gmail.com!'; }
+}
+function loadEmailConfig() {}
+
 // ===== RESET =====
 async function resetData(key){
   if(!confirm('Confirmer la suppression ?'))return;
@@ -1224,9 +1246,30 @@ async function resetData(key){
   toast('✅ Données effacées','ok');
 }
 
+// ===== EMAIL NOTIFICATIONS (Formspree) =====
+var FORMSPREE_URL = 'https://formspree.io/f/xpqgpjnb';
+
+async function sendNotification(sujet, message) {
+  try {
+    await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+      body: JSON.stringify({
+        subject: '🔔 KANJI - ' + sujet,
+        message: message,
+        date: new Date().toLocaleString('fr-FR')
+      })
+    });
+    console.log('✅ Notification envoyée:', sujet);
+  } catch(e) {
+    console.error('❌ Erreur notification:', e);
+  }
+}
+
 // ===== INIT =====
 updateDate();
 loadAll();
+setTimeout(loadEmailConfig, 500);
 setInterval(loadAll,60000);
 
 // ===== PWA SERVICE WORKER =====
