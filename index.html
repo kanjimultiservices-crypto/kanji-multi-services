@@ -302,6 +302,44 @@ tbody td{padding:10px 12px}
   .t-date{display:none}
 }
 
+/* RECHERCHE PUBLIQUE */
+.search-hero{background:linear-gradient(135deg,#0a1f5e,#1A3FA0,#2451c5);border-radius:16px;padding:28px 32px;margin-bottom:24px;text-align:center;position:relative;overflow:hidden}
+.search-hero::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(247,148,29,0.1)}
+.search-hero h2{font-family:'Playfair Display',serif;font-weight:900;font-size:1.6rem;color:white;margin-bottom:6px}
+.search-hero p{color:rgba(255,255,255,0.7);font-size:0.85rem;margin-bottom:20px}
+.search-big{display:flex;gap:10px;max-width:600px;margin:0 auto}
+.search-big input{flex:1;padding:12px 18px;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:0.95rem;outline:none}
+.search-big button{padding:12px 20px;background:var(--or);color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
+.filter-btn{padding:7px 16px;border-radius:20px;border:2px solid #e5e7eb;background:white;font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;color:var(--gy)}
+.filter-btn.active{background:var(--bl);color:white;border-color:var(--bl)}
+.filter-btn:hover{border-color:var(--bl);color:var(--bl)}
+.biens-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.bien-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:transform 0.2s,box-shadow 0.2s;cursor:pointer}
+.bien-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.12)}
+.bien-img{width:100%;height:160px;object-fit:cover;background:linear-gradient(135deg,#f0f4ff,#e8f0fe)}
+.bien-img-placeholder{width:100%;height:160px;background:linear-gradient(135deg,#f0f4ff,#e8f0fe);display:flex;align-items:center;justify-content:center;font-size:3rem}
+.bien-body{padding:14px}
+.bien-type{font-size:0.68rem;font-weight:700;color:var(--or);text-transform:uppercase;margin-bottom:4px}
+.bien-title{font-family:'Playfair Display',serif;font-weight:800;font-size:0.95rem;color:var(--bl);margin-bottom:4px}
+.bien-loc{font-size:0.78rem;color:var(--gy);margin-bottom:8px}
+.bien-prix{font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;color:var(--or)}
+.bien-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid #f3f4f6}
+.bien-details{display:flex;gap:10px;font-size:0.72rem;color:var(--gy)}
+.bien-detail{display:flex;align-items:center;gap:3px}
+.no-results{text-align:center;padding:60px;color:var(--gy)}
+.no-results .nr-icon{font-size:3rem;margin-bottom:12px}
+.no-results .nr-title{font-family:'Playfair Display',serif;font-weight:800;font-size:1.1rem;color:var(--bl);margin-bottom:6px}
+.contact-cta{background:linear-gradient(135deg,#F7941D,#e07f0a);border-radius:14px;padding:24px;text-align:center;margin-top:24px;color:white}
+.contact-cta h3{font-family:'Playfair Display',serif;font-weight:900;font-size:1.2rem;margin-bottom:8px}
+.contact-cta p{font-size:0.85rem;opacity:0.9;margin-bottom:16px}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cta-btn{padding:10px 20px;border-radius:8px;font-weight:700;font-size:0.85rem;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.cta-wa{background:white;color:#25D366}
+.cta-tel{background:rgba(255,255,255,0.2);color:white;border:1px solid rgba(255,255,255,0.4)}
+@media(max-width:768px){.biens-grid{grid-template-columns:1fr 1fr}.search-big{flex-direction:column}}
+@media(max-width:480px){.biens-grid{grid-template-columns:1fr}}
+
 /* MOBILE NAV */
 .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(180deg,#0a1f5e,#1A3FA0);z-index:200;border-top:2px solid rgba(247,148,29,0.4);box-shadow:0 -4px 16px rgba(0,0,0,0.2)}
 .mn-items{display:flex;justify-content:space-around;padding:8px 0 10px}
@@ -484,6 +522,7 @@ tbody td{padding:10px 12px}
     <div class="sb-section">Principal</div>
     <div class="nav-item active" onclick="goPage('dashboard',this)">🏠 Tableau de Bord</div>
     <div class="nav-item" onclick="goPage('about',this)">🏢 Qui sommes-nous</div>
+    <div class="nav-item" onclick="goPage('recherche',this)">🔍 Rechercher un bien</div>
     <div class="sb-section">Gestion</div>
     <div class="nav-item" onclick="goPage('terrains',this)">🗺️ Terrains & Lots</div>
     <div class="nav-item" onclick="goPage('lotissement',this)">🏗️ Lotissement</div>
@@ -581,6 +620,35 @@ tbody td{padding:10px 12px}
           <a class="f-icon f-tt" href="https://www.tiktok.com/@kanji.multi.servic" target="_blank">🎵</a>
           <a class="f-icon f-yt" href="https://www.youtube.com/@kanjimulti-services" target="_blank">▶️</a>
           <a class="f-icon f-wa" href="https://wa.me/2250799630206" target="_blank">💬</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECHERCHE PUBLIQUE -->
+    <div class="page" id="page-recherche">
+      <div class="search-hero">
+        <h2>🔍 Rechercher un bien</h2>
+        <p>Trouvez votre terrain, maison ou lot idéal à Abengourou</p>
+        <div class="search-big">
+          <input id="sr-query" placeholder="Quartier, référence, type..." oninput="searchBiens()">
+          <button onclick="searchBiens()">Rechercher</button>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <span style="font-size:0.82rem;font-weight:700;color:var(--gy)">Filtrer :</span>
+        <button class="filter-btn active" onclick="setFilter('tous',this)">🏠 Tous</button>
+        <button class="filter-btn" onclick="setFilter('terrains',this)">🗺️ Terrains</button>
+        <button class="filter-btn" onclick="setFilter('lotissement',this)">🏗️ Lots</button>
+        <button class="filter-btn" onclick="setFilter('maisons',this)">🏘️ Locations</button>
+        <button class="filter-btn" onclick="setFilter('ventes',this)">🏠 À Vendre</button>
+      </div>
+      <div id="biens-results" class="biens-grid"></div>
+      <div class="contact-cta">
+        <h3>🤝 Vous avez trouvé votre bien ?</h3>
+        <p>Contactez-nous maintenant pour plus d'informations ou pour visiter</p>
+        <div class="cta-btns">
+          <a class="cta-btn cta-wa" href="https://wa.me/2250799630206" target="_blank">💬 WhatsApp</a>
+          <a class="cta-btn cta-tel" href="tel:+2252731932937">📞 Appeler</a>
         </div>
       </div>
     </div>
@@ -781,8 +849,8 @@ tbody td{padding:10px 12px}
 <nav class="mobile-nav">
   <div class="mn-items">
     <button class="mn-item active" onclick="goPage('dashboard',this)"><span class="mn-ico">🏠</span>Accueil</button>
+    <button class="mn-item" onclick="goPage('recherche',this)"><span class="mn-ico">🔍</span>Chercher</button>
     <button class="mn-item" onclick="goPage('terrains',this)"><span class="mn-ico">🗺️</span>Terrains</button>
-    <button class="mn-item" onclick="goPage('lotissement',this)"><span class="mn-ico">🏗️</span>Lots</button>
     <button class="mn-item" onclick="goPage('maisons',this)"><span class="mn-ico">🏘️</span>Maisons</button>
     <button class="mn-item" onclick="openAdmin('page')"><span class="mn-ico">🔐</span>Admin</button>
   </div>
@@ -862,6 +930,7 @@ function goPage(id,el){
   if(id==='ventes')renderVentes();
   if(id==='rapports')renderRapports();
   if(id==='admin')updateAdminStats();
+  if(id==='recherche')searchBiens();
 }
 function updateDate(){
   var d=new Date();
@@ -1234,6 +1303,85 @@ async function testEmail() {
   if(msg) { msg.style.color='#27ae60'; msg.textContent='✅ Email test envoyé sur kanjimultiservices@gmail.com!'; }
 }
 function loadEmailConfig() {}
+
+// ===== RECHERCHE PUBLIQUE =====
+var currentFilter = 'tous';
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});
+  if(btn) btn.classList.add('active');
+  searchBiens();
+}
+
+function searchBiens() {
+  var q = (document.getElementById('sr-query').value || '').toLowerCase().trim();
+  var results = [];
+
+  if(currentFilter === 'tous' || currentFilter === 'terrains') {
+    DB.terrains.filter(function(t){return t.statut==='Disponible'}).forEach(function(t){
+      if(!q || (t.ref+t.loc+t.type+t.lot+t.ilot).toLowerCase().includes(q)) {
+        results.push({cat:'terrain', ico:'🗺️', type:'Terrain '+t.type, title:t.ref, loc:t.loc||'Abengourou', prix:t.prix, sup:t.sup, photos:t.photos, statut:t.statut});
+      }
+    });
+  }
+  if(currentFilter === 'tous' || currentFilter === 'lotissement') {
+    DB.lotissement.filter(function(l){return l.statut==='Disponible'}).forEach(function(l){
+      if(!q || (l.num+l.programme+l.zone).toLowerCase().includes(q)) {
+        results.push({cat:'lot', ico:'🏗️', type:'Lot de Lotissement', title:l.num, loc:l.zone||l.programme||'Abengourou', prix:l.prix, sup:l.sup, photos:l.photos, statut:l.statut});
+      }
+    });
+  }
+  if(currentFilter === 'tous' || currentFilter === 'maisons') {
+    DB.maisons.filter(function(m){return m.statut==='Libre'}).forEach(function(m){
+      if(!q || (m.ref+m.adresse+m.type).toLowerCase().includes(q)) {
+        results.push({cat:'maison', ico:'🏘️', type:'Location - '+m.type, title:m.ref, loc:m.adresse||'Abengourou', prix:m.loyer, pieces:m.pieces, photos:m.photos, statut:'Libre', isLoyer:true});
+      }
+    });
+  }
+  if(currentFilter === 'tous' || currentFilter === 'ventes') {
+    DB.ventes.filter(function(v){return v.statut==='Disponible'}).forEach(function(v){
+      if(!q || (v.ref+v.adresse+v.type).toLowerCase().includes(q)) {
+        results.push({cat:'vente', ico:'🏠', type:'À Vendre - '+v.type, title:v.ref, loc:v.adresse||'Abengourou', prix:v.prix, pieces:v.pieces, sup:v.sup, photos:v.photos, statut:'Disponible'});
+      }
+    });
+  }
+
+  var c = document.getElementById('biens-results');
+  if(!c) return;
+
+  if(!results.length) {
+    c.className = '';
+    c.innerHTML = '<div class="no-results"><div class="nr-icon">🔍</div><div class="nr-title">Aucun bien trouvé</div><p style="color:var(--gy);font-size:0.85rem">Essayez avec d'autres mots clés ou contactez-nous directement</p></div>';
+    return;
+  }
+
+  c.className = 'biens-grid';
+  c.innerHTML = results.map(function(b) {
+    var img = (b.photos && b.photos.length) 
+      ? '<img class="bien-img" src="'+b.photos[0]+'" alt="'+b.title+'" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">'+'<div class="bien-img-placeholder" style="display:none">'+b.ico+'</div>'
+      : '<div class="bien-img-placeholder">'+b.ico+'</div>';
+    var prixStr = b.prix ? Number(b.prix).toLocaleString()+' FCFA'+(b.isLoyer?'/mois':'') : 'Prix sur demande';
+    var details = '';
+    if(b.pieces) details += '<span class="bien-detail">🛏️ '+b.pieces+' pièces</span>';
+    if(b.sup) details += '<span class="bien-detail">📐 '+Number(b.sup).toLocaleString()+' m²</span>';
+    return '<div class="bien-card" onclick="contactBien(''+b.title+'')">'
+      +img
+      +'<div class="bien-body">'
+      +'<div class="bien-type">'+b.type+'</div>'
+      +'<div class="bien-title">'+b.title+'</div>'
+      +'<div class="bien-loc">📍 '+b.loc+'</div>'
+      +'<div class="bien-prix">'+prixStr+'</div>'
+      +(details?'<div class="bien-footer"><div class="bien-details">'+details+'</div><span class="badge b-dispo">Disponible</span></div>':'')
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+function contactBien(ref) {
+  var msg = encodeURIComponent('Bonjour KANJI MULTI SERVICES, je suis intéressé(e) par le bien référence: '+ref+'. Pouvez-vous me donner plus d'informations ?');
+  window.open('https://wa.me/2250799630206?text='+msg, '_blank');
+}
 
 // ===== RESET =====
 async function resetData(key){
