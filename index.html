@@ -1387,8 +1387,8 @@ function contactBien(ref) {
 async function resetData(key){
   if(!confirm('Confirmer la suppression ?'))return;
   var tables=key==='all'?['terrains','lotissement','maisons','ventes','clients','contrats','paiements','activites']:[key];
-  for(var t of tables){
-    await fetch(SURL+'/rest/v1/'+t+'?id=gt.0',{method:'DELETE',headers:{'apikey':SKEY,'Authorization':'Bearer '+SKEY}});
+  for(var ti=0;ti<tables.length;ti++){
+    await fetch(SURL+'/rest/v1/'+tables[ti]+'?id=gt.0',{method:'DELETE',headers:{'apikey':SKEY,'Authorization':'Bearer '+SKEY}});
   }
   await loadAll();
   toast('✅ Données effacées','ok');
