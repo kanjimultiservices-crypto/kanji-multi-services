@@ -498,6 +498,21 @@ tbody td{padding:10px 12px}
   </div>
 </div>
 
+<!-- MODAL CHANGER MOT DE PASSE COMPTA (self-service) -->
+<div class="overlay" id="modalComptaPwd">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head"><h3>🔑 Changer mon mot de passe</h3><button class="modal-close" onclick="closeModal('modalComptaPwd')">✕</button></div>
+    <p style="font-size:0.82rem;color:var(--gy);margin-bottom:14px">Entre ton mot de passe actuel pour le modifier.</p>
+    <div class="form-grid">
+      <div class="form-group full"><label>Mot de passe actuel</label><input type="password" id="self-pwd-old" placeholder="••••••••"></div>
+      <div class="form-group full"><label>Nouveau mot de passe</label><input type="password" id="self-pwd-new" placeholder="••••••••"></div>
+      <div class="form-group full"><label>Confirmer</label><input type="password" id="self-pwd-confirm" placeholder="••••••••"></div>
+    </div>
+    <div id="self-pwd-msg" style="margin-top:10px;font-size:0.82rem"></div>
+    <div class="form-actions"><button class="btn btn-primary" onclick="selfChangeComptaPwd()">✔ Mettre à jour</button><button class="btn btn-outline" onclick="closeModal('modalComptaPwd')">Annuler</button></div>
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
   <button class="lb-close" onclick="document.getElementById('lightbox').classList.remove('show')">✕</button>
@@ -756,7 +771,7 @@ tbody td{padding:10px 12px}
     <div class="page" id="page-paiements">
       <div class="secret-lock" id="paiements-lock"><div class="s-icon">💰</div><div class="s-title">Accès Comptabilité</div><div class="s-sub">Section réservée à la comptabilité. Mot de passe spécial requis.</div><button class="s-btn" onclick="openAdmin('paiements')" style="background:linear-gradient(135deg,#27ae60,#1e8449)">🔑 Accéder</button></div>
       <div id="paiements-content" style="display:none">
-        <div class="page-header"><div class="page-title">💰 Paiements</div><button class="btn btn-primary" onclick="openModal('modalPaiement')">+ Enregistrer</button></div>
+        <div class="page-header"><div class="page-title">💰 Paiements</div><div style="display:flex;gap:8px"><button class="btn btn-outline btn-sm" onclick="openComptaPwdModal()">🔑 Mon mot de passe</button><button class="btn btn-primary" onclick="openModal('modalPaiement')">+ Enregistrer</button></div></div>
         <div class="card tbl-wrap"><table><thead><tr><th>#</th><th>N° Reçu</th><th>Client</th><th>Bien</th><th>Montant</th><th>Mode</th><th>Date</th><th>Note</th><th>Action</th></tr></thead><tbody id="tb-paiements"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--gy)">💰 Aucun paiement</td></tr></tbody></table></div>
       </div>
     </div>
@@ -1042,6 +1057,25 @@ function unlockSection(section){
   if(section==='paiements')renderPaiements();
   if(section==='rapports')renderRapports();
 }
+function openComptaPwdModal(){
+  ['self-pwd-old','self-pwd-new','self-pwd-confirm'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var msg=document.getElementById('self-pwd-msg');if(msg)msg.textContent='';
+  openModal('modalComptaPwd');
+}
+
+function selfChangeComptaPwd(){
+  var old=document.getElementById('self-pwd-old').value;
+  var nw=document.getElementById('self-pwd-new').value;
+  var cf=document.getElementById('self-pwd-confirm').value;
+  var msg=document.getElementById('self-pwd-msg');
+  if(old!==paiementsPwd){msg.style.color='#e74c3c';msg.textContent='❌ Mot de passe actuel incorrect.';return;}
+  if(!nw||nw.length<4){msg.style.color='#e74c3c';msg.textContent='❌ Trop court (min 4 caractères).';return;}
+  if(nw!==cf){msg.style.color='#e74c3c';msg.textContent='❌ Confirmation incorrecte.';return;}
+  paiementsPwd=nw;localStorage.setItem('kanji_paiements_pwd',nw);
+  msg.style.color='#27ae60';msg.textContent='✅ Mot de passe mis à jour avec succès!';
+  setTimeout(function(){closeModal('modalComptaPwd');toast('✅ Mot de passe changé!','ok');},1500);
+}
+
 function changeComptaPwd(){
   var old=document.getElementById('pwd-compta-old').value;
   var nw=document.getElementById('pwd-compta-new').value;
