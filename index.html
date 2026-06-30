@@ -754,7 +754,7 @@ tbody td{padding:10px 12px}
 
     <!-- PAIEMENTS -->
     <div class="page" id="page-paiements">
-      <div class="secret-lock" id="paiements-lock"><div class="s-icon">🔐</div><div class="s-title">Accès Restreint</div><div class="s-sub">Section réservée à l'administration.</div><button class="s-btn" onclick="openAdmin('paiements')">🔑 Accéder</button></div>
+      <div class="secret-lock" id="paiements-lock"><div class="s-icon">💰</div><div class="s-title">Accès Comptabilité</div><div class="s-sub">Section réservée à la comptabilité. Mot de passe spécial requis.</div><button class="s-btn" onclick="openAdmin('paiements')" style="background:linear-gradient(135deg,#27ae60,#1e8449)">🔑 Accéder</button></div>
       <div id="paiements-content" style="display:none">
         <div class="page-header"><div class="page-title">💰 Paiements</div><button class="btn btn-primary" onclick="openModal('modalPaiement')">+ Enregistrer</button></div>
         <div class="card tbl-wrap"><table><thead><tr><th>#</th><th>N° Reçu</th><th>Client</th><th>Bien</th><th>Montant</th><th>Mode</th><th>Date</th><th>Note</th><th>Action</th></tr></thead><tbody id="tb-paiements"><tr><td colspan="8" style="text-align:center;padding:30px;color:var(--gy)">💰 Aucun paiement</td></tr></tbody></table></div>
@@ -785,6 +785,19 @@ tbody td{padding:10px 12px}
         <div class="adm-mini"><div class="val" id="a-c">0</div><div class="lbl">Clients</div></div>
         <div class="adm-mini"><div class="val" id="a-p">0</div><div class="lbl">Paiements</div></div>
         <div class="adm-mini"><div class="val" id="a-rev" style="font-size:0.9rem">0</div><div class="lbl">Total FCFA</div></div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">💰 Mot de passe Comptabilité (Paiements)</div>
+        <div class="pwd-section">
+          <p style="font-size:0.82rem;color:var(--gy);margin-bottom:12px;">Ce mot de passe protège l'accès à la section Paiements pour ta comptable.</p>
+          <div class="form-grid">
+            <div class="form-group"><label>Mot de passe actuel (compta)</label><input type="password" id="pwd-compta-old" placeholder="••••••••"></div>
+            <div class="form-group"><label>Nouveau mot de passe</label><input type="password" id="pwd-compta-new" placeholder="••••••••"></div>
+            <div class="form-group"><label>Confirmer</label><input type="password" id="pwd-compta-confirm" placeholder="••••••••"></div>
+          </div>
+          <div id="pwd-compta-msg" style="margin-top:10px;font-size:0.82rem"></div>
+          <div class="form-actions"><button class="btn btn-primary" onclick="changeComptaPwd()">🔒 Mettre à jour</button></div>
+        </div>
       </div>
       <div class="card" style="margin-bottom:16px">
         <div class="card-title">Changer le mot de passe</div>
@@ -890,6 +903,7 @@ async function db_delete(table,id){
 // ===== STATE =====
 var DB={terrains:[],lotissement:[],maisons:[],ventes:[],clients:[],contrats:[],paiements:[],activites:[]};
 var adminPwd=localStorage.getItem('kanji_pwd')||'kanji2026';
+var paiementsPwd=localStorage.getItem('kanji_paiements_pwd')||'compta2026';
 var isAdmin=false;
 var adminTarget=null;
 var lbPhotos=[],lbIdx=0;
@@ -948,6 +962,15 @@ function openAdmin(target){
   var inp=document.getElementById('adminPwdInput');
   if(inp){inp.value='';setTimeout(function(){inp.focus();},100);}
   document.getElementById('adminErr').classList.remove('show');
+  var title=document.querySelector('.admin-title');
+  var sub=document.querySelector('.admin-sub');
+  if(target==='paiements'){
+    if(title)title.textContent='💰 Accès Comptabilité';
+    if(sub)sub.textContent='Mot de passe paiements requis';
+  } else {
+    if(title)title.textContent='🔐 Espace Administrateur';
+    if(sub)sub.textContent='Entrez votre mot de passe';
+  }
 }
 function closeAdminOverlay(){
   document.getElementById('adminOverlay').classList.remove('show');
@@ -955,24 +978,38 @@ function closeAdminOverlay(){
 }
 function submitAdmin(){
   var val=document.getElementById('adminPwdInput').value;
-  if(val===adminPwd){
-    isAdmin=true;
+  var isPaiementsTarget = (adminTarget==='paiements');
+  var correctPwd = isPaiementsTarget ? paiementsPwd : adminPwd;
+  
+  // Le mot de passe Admin général donne aussi accès aux paiements
+  if(val===correctPwd || (isPaiementsTarget && val===adminPwd)){
     document.getElementById('adminOverlay').classList.remove('show');
-    document.querySelectorAll('.admin-nav').forEach(function(el){el.style.display='flex';});
     if(adminTarget==='page'){
+      isAdmin=true;
+      document.querySelectorAll('.admin-nav').forEach(function(el){el.style.display='flex';});
       goPage('admin',document.querySelector('.nav-item:last-child'));
+      var rv = document.getElementById('st-revenus');
+      if(rv) rv.style.filter = 'none';
+      var rl = document.getElementById('revenus-label');
+      if(rl) rl.textContent = 'FCFA';
     } else if(adminTarget&&adminTarget.startsWith('modal')){
+      isAdmin=true;
+      document.querySelectorAll('.admin-nav').forEach(function(el){el.style.display='flex';});
       openModal(adminTarget);
+    } else if(adminTarget==='paiements'){
+      document.querySelectorAll('.admin-nav').forEach(function(el){el.style.display='flex';});
+      unlockSection('paiements');
+      var rv = document.getElementById('st-revenus');
+      if(rv) rv.style.filter = 'none';
+      var rl = document.getElementById('revenus-label');
+      if(rl) rl.textContent = 'FCFA';
     } else if(adminTarget){
+      isAdmin=true;
+      document.querySelectorAll('.admin-nav').forEach(function(el){el.style.display='flex';});
       unlockSection(adminTarget);
     }
     adminTarget=null;
-    toast('✅ Connecté en tant qu\'Admin','ok');
-    // Afficher le montant total
-    var rv = document.getElementById('st-revenus');
-    if(rv) rv.style.filter = 'none';
-    var rl = document.getElementById('revenus-label');
-    if(rl) rl.textContent = 'FCFA';
+    toast('✅ Accès autorisé!','ok');
   } else {
     document.getElementById('adminErr').classList.add('show');
     setTimeout(function(){document.getElementById('adminErr').classList.remove('show');},2500);
@@ -1005,6 +1042,19 @@ function unlockSection(section){
   if(section==='paiements')renderPaiements();
   if(section==='rapports')renderRapports();
 }
+function changeComptaPwd(){
+  var old=document.getElementById('pwd-compta-old').value;
+  var nw=document.getElementById('pwd-compta-new').value;
+  var cf=document.getElementById('pwd-compta-confirm').value;
+  var msg=document.getElementById('pwd-compta-msg');
+  if(old!==paiementsPwd){msg.style.color='#e74c3c';msg.textContent='❌ Mot de passe actuel incorrect.';return;}
+  if(!nw||nw.length<4){msg.style.color='#e74c3c';msg.textContent='❌ Trop court (min 4 caractères).';return;}
+  if(nw!==cf){msg.style.color='#e74c3c';msg.textContent='❌ Confirmation incorrecte.';return;}
+  paiementsPwd=nw;localStorage.setItem('kanji_paiements_pwd',nw);
+  msg.style.color='#27ae60';msg.textContent='✅ Mot de passe compta mis à jour !';
+  ['pwd-compta-old','pwd-compta-new','pwd-compta-confirm'].forEach(function(id){document.getElementById(id).value='';});
+}
+
 function changePwd(){
   var old=document.getElementById('pwd-old').value;
   var nw=document.getElementById('pwd-new').value;
