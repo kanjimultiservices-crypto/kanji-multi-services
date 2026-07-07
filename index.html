@@ -1483,7 +1483,7 @@ function searchBiens() {
     var img = (b.photos && b.photos.length) 
       ? '<img class="bien-img" src="'+b.photos[0]+'" alt="'+b.title+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'+'<div class="bien-img-placeholder" style="display:none">'+b.ico+'</div>'
       : '<div class="bien-img-placeholder">'+b.ico+'</div>';
-    var prixStr = b.prix ? Number(b.prix).toLocaleString()+' FCFA'+(b.isLoyer?'/mois':'') : 'Prix sur demande';
+    var prixStr = b.prix ? formatPrix(b.prix)+(b.isLoyer?'/mois':'') : 'Prix sur demande';
     var details = '';
     if(b.pieces) details += '<span class="bien-detail">🛏️ '+b.pieces+' pièces</span>';
     if(b.sup) details += '<span class="bien-detail">📐 '+Number(b.sup).toLocaleString()+' m²</span>';
