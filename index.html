@@ -393,7 +393,7 @@ tbody td{padding:10px 12px}
       <div class="form-group"><label>Type</label><select id="t-type"><option>Lot résidentiel</option><option>Lot commercial</option><option>Terrain agricole</option></select></div>
       <div class="form-group full"><label>Localisation</label><input id="t-loc" placeholder="Quartier, Zone..."></div>
       <div class="form-group"><label>Superficie (m²)</label><input type="number" id="t-sup" placeholder="500"></div>
-      <div class="form-group"><label>Prix (FCFA)</label><input type="number" id="t-prix" placeholder="5000000"></div>
+      <div class="form-group"><label>Prix (FCFA)</label><input type="text" id="t-prix" placeholder="Ex: 6.000.000"></div>
       <div class="form-group"><label>Statut</label><select id="t-statut"><option>Disponible</option><option>Réservé</option><option>Vendu</option></select></div>
       <div class="form-group"><label>N° Lot</label><input id="t-lot" placeholder="N°12"></div>
       <div class="form-group"><label>N° Îlot</label><input id="t-ilot" placeholder="Îlot 5"></div>
@@ -419,7 +419,7 @@ tbody td{padding:10px 12px}
       <div class="form-group"><label>Programme</label><input id="l-prog" placeholder="Nom du lotissement"></div>
       <div class="form-group"><label>Zone</label><input id="l-zone" placeholder="Zone résidentielle"></div>
       <div class="form-group"><label>Superficie (m²)</label><input type="number" id="l-sup" placeholder="300"></div>
-      <div class="form-group"><label>Prix (FCFA)</label><input type="number" id="l-prix" placeholder="3000000"></div>
+      <div class="form-group"><label>Prix (FCFA)</label><input type="text" id="l-prix" placeholder="Ex: 3.000.000"></div>
       <div class="form-group"><label>Statut</label><select id="l-statut"><option>Disponible</option><option>Réservé</option><option>Vendu</option></select></div>
       <div class="form-group"><label>Acquéreur</label><input id="l-acq" placeholder="Nom si vendu/réservé"></div>
       <div class="form-group full"><label>Notes</label><textarea id="l-notes" placeholder="Informations..."></textarea></div>
@@ -443,7 +443,7 @@ tbody td{padding:10px 12px}
       <div class="form-group"><label>Type</label><select id="m-type"><option>Villa</option><option>Appartement</option><option>Studio</option><option>Maison simple</option><option>Duplex</option></select></div>
       <div class="form-group full"><label>Adresse</label><input id="m-adr" placeholder="Quartier, Rue..."></div>
       <div class="form-group"><label>Pièces</label><input type="number" id="m-pieces" placeholder="3"></div>
-      <div class="form-group"><label>Loyer/mois (FCFA)</label><input type="number" id="m-loyer" placeholder="150000"></div>
+      <div class="form-group"><label>Loyer/mois (FCFA)</label><input type="text" id="m-loyer" placeholder="Ex: 150.000"></div>
       <div class="form-group"><label>Statut</label><select id="m-statut"><option>Libre</option><option>Louée</option></select></div>
       <div class="form-group full"><label>Locataire</label><input id="m-loc" placeholder="Nom du locataire"></div>
       <div class="form-group full"><label>Description</label><textarea id="m-desc" placeholder="Détails..."></textarea></div>
@@ -468,7 +468,7 @@ tbody td{padding:10px 12px}
       <div class="form-group full"><label>Adresse</label><input id="v-adr" placeholder="Quartier, Rue..."></div>
       <div class="form-group"><label>Pièces</label><input type="number" id="v-pieces" placeholder="4"></div>
       <div class="form-group"><label>Superficie (m²)</label><input type="number" id="v-sup" placeholder="200"></div>
-      <div class="form-group"><label>Prix (FCFA)</label><input type="number" id="v-prix" placeholder="25000000"></div>
+      <div class="form-group"><label>Prix (FCFA)</label><input type="text" id="v-prix" placeholder="Ex: 25.000.000"></div>
       <div class="form-group"><label>Statut</label><select id="v-statut"><option>Disponible</option><option>Réservé</option><option>Vendu</option></select></div>
       <div class="form-group full"><label>Description</label><textarea id="v-desc" placeholder="Détails..."></textarea></div>
       <div class="form-group full gallery-zone">
@@ -507,7 +507,7 @@ tbody td{padding:10px 12px}
       <div class="form-group"><label>N° Reçu</label><input id="p-recu" placeholder="REC-001"></div>
       <div class="form-group"><label>Client</label><input id="p-client" placeholder="Nom du client"></div>
       <div class="form-group"><label>Bien / Contrat</label><input id="p-bien" placeholder="Réf."></div>
-      <div class="form-group"><label>Montant (FCFA) *</label><input type="number" id="p-montant" placeholder="500000"></div>
+      <div class="form-group"><label>Montant (FCFA) *</label><input type="text" id="p-montant" placeholder="Ex: 500.000"></div>
       <div class="form-group"><label>Mode</label><select id="p-mode"><option>Espèces</option><option>Virement</option><option>Mobile Money</option><option>Chèque</option></select></div>
       <div class="form-group"><label>Date</label><input type="date" id="p-date"></div>
       <div class="form-group full"><label>Note</label><textarea id="p-note" placeholder="Acompte, loyer mois de..."></textarea></div>
@@ -1245,7 +1245,7 @@ function renderTerrains(data){
   if(!data.length){tb.innerHTML='<tr><td colspan="11" style="text-align:center;padding:30px;color:var(--gy)">🗺️ Aucun terrain</td></tr>';return;}
   tb.innerHTML=data.map(function(t,i){
     var sc=t.statut==='Disponible'?'b-dispo':t.statut==='Vendu'?'b-vendu':'b-reserve';
-    return '<tr><td>'+(i+1)+'</td><td>'+thumbs(t.photos)+'</td><td><strong>'+(t.ref||'')+'</strong></td><td>'+(t.lot||'—')+'</td><td>'+(t.ilot||'—')+'</td><td>'+(t.loc||'—')+'</td><td>'+(t.sup?Number(t.sup).toLocaleString()+' m²':'—')+'</td><td>'+(t.type||'—')+'</td><td>'+(t.prix?Number(t.prix).toLocaleString():'-')+'</td><td><span class="badge '+sc+'">'+t.statut+'</span></td><td><button class="btn btn-danger btn-sm" onclick="delTerrain('+t.id+')">🗑️</button></td></tr>';
+    return '<tr><td>'+(i+1)+'</td><td>'+thumbs(t.photos)+'</td><td><strong>'+(t.ref||'')+'</strong></td><td>'+(t.lot||'—')+'</td><td>'+(t.ilot||'—')+'</td><td>'+(t.loc||'—')+'</td><td>'+(t.sup?Number(t.sup).toLocaleString()+' m²':'—')+'</td><td>'+(t.type||'—')+'</td><td>'+(t.prix?formatPrix(t.prix):'-')+'</td><td><span class="badge '+sc+'">'+t.statut+'</span></td><td><button class="btn btn-danger btn-sm" onclick="delTerrain('+t.id+')">🗑️</button></td></tr>';
   }).join('');
 }
 async function delTerrain(id){if(!confirm('Supprimer?'))return;await db_delete('terrains',id);DB.terrains=await db_get('terrains');updateStats();renderTerrains();toast('✅ Supprimé','ok');}
@@ -1278,7 +1278,7 @@ function renderLots(data){
   if(!data.length){tb.innerHTML='<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--gy)">🏗️ Aucun lot</td></tr>';return;}
   tb.innerHTML=data.map(function(l,i){
     var sc=l.statut==='Disponible'?'b-dispo':l.statut==='Vendu'?'b-vendu':'b-reserve';
-    return '<tr><td>'+(i+1)+'</td><td>'+thumbs(l.photos)+'</td><td><strong>'+(l.num||'')+'</strong></td><td>'+(l.ilot||'—')+'</td><td>'+(l.programme||'—')+'</td><td>'+(l.sup?Number(l.sup).toLocaleString()+' m²':'—')+'</td><td>'+(l.prix?Number(l.prix).toLocaleString():'-')+'</td><td><span class="badge '+sc+'">'+l.statut+'</span></td><td>'+(l.acquereur||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="delLot('+l.id+')">🗑️</button></td></tr>';
+    return '<tr><td>'+(i+1)+'</td><td>'+thumbs(l.photos)+'</td><td><strong>'+(l.num||'')+'</strong></td><td>'+(l.ilot||'—')+'</td><td>'+(l.programme||'—')+'</td><td>'+(l.sup?Number(l.sup).toLocaleString()+' m²':'—')+'</td><td>'+(l.prix?formatPrix(l.prix):'-')+'</td><td><span class="badge '+sc+'">'+l.statut+'</span></td><td>'+(l.acquereur||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="delLot('+l.id+')">🗑️</button></td></tr>';
   }).join('');
 }
 async function delLot(id){if(!confirm('Supprimer?'))return;await db_delete('lotissement',id);DB.lotissement=await db_get('lotissement');updateStats();renderLots();toast('✅ Supprimé','ok');}
@@ -1312,7 +1312,7 @@ function renderMaisons(data){
   if(!data.length){tb.innerHTML='<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--gy)">🏘️ Aucune maison</td></tr>';return;}
   tb.innerHTML=data.map(function(m,i){
     var sc=m.statut==='Libre'?'b-libre':'b-loue';
-    return '<tr><td>'+(i+1)+'</td><td>'+thumbs(m.photos)+'</td><td><strong>'+(m.ref||'')+'</strong></td><td>'+(m.adresse||'—')+'</td><td>'+(m.type||'—')+'</td><td>'+(m.pieces||'—')+'</td><td>'+(m.loyer?Number(m.loyer).toLocaleString()+' FCFA/mois':'—')+'</td><td><span class="badge '+sc+'">'+m.statut+'</span></td><td>'+(m.locataire||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="delMaison('+m.id+')">🗑️</button></td></tr>';
+    return '<tr><td>'+(i+1)+'</td><td>'+thumbs(m.photos)+'</td><td><strong>'+(m.ref||'')+'</strong></td><td>'+(m.adresse||'—')+'</td><td>'+(m.type||'—')+'</td><td>'+(m.pieces||'—')+'</td><td>'+(m.loyer?formatPrix(m.loyer).replace(' FCFA',' FCFA/mois'):'—')+'</td><td><span class="badge '+sc+'">'+m.statut+'</span></td><td>'+(m.locataire||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="delMaison('+m.id+')">🗑️</button></td></tr>';
   }).join('');
 }
 async function delMaison(id){if(!confirm('Supprimer?'))return;await db_delete('maisons',id);DB.maisons=await db_get('maisons');updateStats();renderMaisons();toast('✅ Supprimé','ok');}
@@ -1345,7 +1345,7 @@ function renderVentes(data){
   if(!data.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--gy)">🏠 Aucune maison</td></tr>';return;}
   tb.innerHTML=data.map(function(v,i){
     var sc=v.statut==='Disponible'?'b-dispo':v.statut==='Vendu'?'b-vendu':'b-reserve';
-    return '<tr><td>'+(i+1)+'</td><td>'+thumbs(v.photos)+'</td><td><strong>'+(v.ref||'')+'</strong></td><td>'+(v.adresse||'—')+'</td><td>'+(v.type||'—')+'</td><td>'+(v.pieces||'—')+'</td><td>'+(v.prix?Number(v.prix).toLocaleString()+' FCFA':'—')+'</td><td><span class="badge '+sc+'">'+v.statut+'</span></td><td><button class="btn btn-danger btn-sm" onclick="delVente('+v.id+')">🗑️</button></td></tr>';
+    return '<tr><td>'+(i+1)+'</td><td>'+thumbs(v.photos)+'</td><td><strong>'+(v.ref||'')+'</strong></td><td>'+(v.adresse||'—')+'</td><td>'+(v.type||'—')+'</td><td>'+(v.pieces||'—')+'</td><td>'+(v.prix?formatPrix(v.prix):'—')+'</td><td><span class="badge '+sc+'">'+v.statut+'</span></td><td><button class="btn btn-danger btn-sm" onclick="delVente('+v.id+')">🗑️</button></td></tr>';
   }).join('');
 }
 async function delVente(id){if(!confirm('Supprimer?'))return;await db_delete('ventes',id);DB.ventes=await db_get('ventes');updateStats();renderVentes();toast('✅ Supprimé','ok');}
@@ -1503,6 +1503,19 @@ function searchBiens() {
 function contactBien(ref) {
   var msg = encodeURIComponent('Bonjour KANJI MULTI SERVICES, je suis interesse par le bien reference: '+ref+'. Pouvez-vous me donner plus d informations ?');
   window.open('https://wa.me/2250799630206?text='+msg, '_blank');
+}
+
+// ===== FORMAT PRIX =====
+function formatPrix(val){
+  if(!val) return '-';
+  // Nettoyer la valeur (enlever espaces, remplacer virgules par points)
+  var clean = String(val).replace(/\s/g,'').replace(/,/g,'.');
+  // Si c'est un nombre pur, formater avec points
+  var num = parseFloat(clean.replace(/\./g,'').replace(',','.'));
+  if(!isNaN(num)){
+    return num.toLocaleString('fr-FR').replace(/\s/g,'.') + ' FCFA';
+  }
+  return val + ' FCFA';
 }
 
 // ===== RESET =====
