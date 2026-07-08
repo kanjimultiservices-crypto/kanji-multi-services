@@ -387,16 +387,16 @@ tbody td{padding:10px 12px}
 <!-- MODAL TERRAIN -->
 <div class="overlay" id="modalTerrain">
   <div class="modal">
-    <div class="modal-head"><h3>🗺️ Nouvelle Parcelle</h3><button class="modal-close" onclick="closeModal('modalTerrain')">✕</button></div>
+    <div class="modal-head"><h3>🗺️ Nouvelle Lot</h3><button class="modal-close" onclick="closeModal('modalTerrain')">✕</button></div>
     <div class="form-grid">
       <div class="form-group"><label>Référence *</label><input id="t-ref" placeholder="LOT-001"></div>
-      <div class="form-group"><label>Type</label><select id="t-type"><option>Lot résidentiel</option><option>Lot commercial</option><option>Terrain agricole</option></select></div>
+      <div class="form-group"><label>Type</label><select id="t-type"><option>Parcelle résidentiel</option><option>Parcelle commercial</option><option>Terrain agricole</option></select></div>
       <div class="form-group full"><label>Localisation</label><input id="t-loc" placeholder="Quartier, Zone..."></div>
       <div class="form-group"><label>Superficie (m²)</label><input type="number" id="t-sup" placeholder="500"></div>
       <div class="form-group"><label>Prix (FCFA)</label><input type="text" id="t-prix" placeholder="Ex: 6.000.000"></div>
       <div class="form-group"><label>Statut</label><select id="t-statut"><option>Disponible</option><option>Réservé</option><option>Vendu</option></select></div>
       <div class="form-group"><label>N° Lot</label><input id="t-lot" placeholder="N°12"></div>
-      <div class="form-group"><label>N° Îlot</label><input id="t-ilot" placeholder="Îlot 5"></div>
+      <div class="form-group"><label>N° Îlot</label><input id="t-ilot" placeholder="Îparcelle 5"></div>
       <div class="form-group full"><label>Notes</label><textarea id="t-notes" placeholder="Informations..."></textarea></div>
       <div class="form-group full gallery-zone">
         <label style="font-size:0.75rem;font-weight:700;color:var(--gy);display:block;margin-bottom:8px">📸 Photos</label>
@@ -412,11 +412,11 @@ tbody td{padding:10px 12px}
 <!-- MODAL LOTISSEMENT -->
 <div class="overlay" id="modalLot">
   <div class="modal">
-    <div class="modal-head"><h3>🏗️ Nouveau Lot de Lotissement</h3><button class="modal-close" onclick="closeModal('modalLot')">✕</button></div>
+    <div class="modal-head"><h3>🏗️ Nouveau Parcelle de Lotissement</h3><button class="modal-close" onclick="closeModal('modalLot')">✕</button></div>
     <div class="form-grid">
-      <div class="form-group"><label>N° Lot *</label><input id="l-num" placeholder="Lot N°01"></div>
-      <div class="form-group"><label>N° Îlot</label><input id="l-ilot" placeholder="Îlot 3"></div>
-      <div class="form-group"><label>Programme</label><input id="l-prog" placeholder="Nom du lotissement"></div>
+      <div class="form-group"><label>N° Parcelle *</label><input id="l-num" placeholder="Parcelle N°01"></div>
+      <div class="form-group"><label>N° Îlot</label><input id="l-ilot" placeholder="Îparcelle 3"></div>
+      <div class="form-group"><label>Programme</label><input id="l-prog" placeholder="Nom de la parcelleissement"></div>
       <div class="form-group"><label>Zone</label><input id="l-zone" placeholder="Zone résidentielle"></div>
       <div class="form-group"><label>Superficie (m²)</label><input type="number" id="l-sup" placeholder="300"></div>
       <div class="form-group"><label>Prix (FCFA)</label><input type="text" id="l-prix" placeholder="Ex: 3.000.000"></div>
@@ -557,7 +557,7 @@ tbody td{padding:10px 12px}
     <div class="nav-item" onclick="goPage('about',this)">🏢 Qui sommes-nous</div>
     <div class="nav-item" onclick="goPage('recherche',this)">🔍 Rechercher un bien</div>
     <div class="sb-section">Gestion</div>
-    <div class="nav-item" onclick="goPage('terrains',this)">🗺️ Parcelles & Lots</div>
+    <div class="nav-item" onclick="goPage('terrains',this)">🗺️ Lots & Parcelles</div>
     <div class="nav-item" onclick="goPage('lotissement',this)">🏗️ Lotissement</div>
     <div class="nav-item" onclick="goPage('maisons',this)">🏘️ Maisons & Locations</div>
     <div class="nav-item" onclick="goPage('ventes',this)">🏠 Maisons à Vendre</div>
@@ -622,14 +622,14 @@ tbody td{padding:10px 12px}
       </div>
       <div class="stats-grid">
         <div class="stat-card"><div class="s-icon">🗺️</div><div class="s-info"><div class="s-label">Terrains Disponibles</div><div class="s-val" id="st-terrains">0</div><div class="s-sub">↑ actifs</div></div></div>
-        <div class="stat-card purple"><div class="s-icon">🏗️</div><div class="s-info"><div class="s-label">Lots Lotissement</div><div class="s-val" id="st-lots">0</div><div class="s-sub" style="color:#9b59b6">↑ disponibles</div></div></div>
+        <div class="stat-card purple"><div class="s-icon">🏗️</div><div class="s-info"><div class="s-label">Parcelles Lotissement</div><div class="s-val" id="st-lots">0</div><div class="s-sub" style="color:#9b59b6">↑ disponibles</div></div></div>
         <div class="stat-card blue"><div class="s-icon">🏘️</div><div class="s-info"><div class="s-label">Maisons en Location</div><div class="s-val" id="st-maisons">0</div><div class="s-sub" style="color:var(--bl)">↑ libres</div></div></div>
         <div class="stat-card green"><div class="s-icon">🏠</div><div class="s-info"><div class="s-label">Maisons à Vendre</div><div class="s-val" id="st-ventes">0</div><div class="s-sub" style="color:var(--gr)">↑ disponibles</div></div></div>
         <div class="stat-card gray" id="card-revenus"><div class="s-icon">💰</div><div class="s-info"><div class="s-label">Total Encaissé</div><div class="s-val" id="st-revenus" style="font-size:1.2rem;filter:blur(6px);user-select:none">••••••</div><div class="s-sub" style="color:var(--gy)" id="revenus-label">🔐 Admin seulement</div></div></div>
       </div>
       <div class="card-title" style="font-family:'Playfair Display',serif;font-weight:800;font-size:0.95rem;color:var(--bl);margin-bottom:14px;display:flex;align-items:center;gap:8px">Actions Rapides <span style="flex:1;height:2px;background:linear-gradient(to right,var(--or),transparent);border-radius:2px"></span></div>
       <div class="qa-grid">
-        <div class="qa-btn" onclick="needAdmin('modalTerrain')"><div class="qa-icon">➕🗺️</div><div class="qa-lbl">Nouvelle Parcelle</div></div>
+        <div class="qa-btn" onclick="needAdmin('modalTerrain')"><div class="qa-icon">➕🗺️</div><div class="qa-lbl">Nouvelle Lot</div></div>
         <div class="qa-btn" onclick="needAdmin('modalLot')"><div class="qa-icon">➕🏗️</div><div class="qa-lbl">Nouveau Lot</div></div>
         <div class="qa-btn" onclick="needAdmin('modalMaison')"><div class="qa-icon">➕🏘️</div><div class="qa-lbl">Nouvelle Maison</div></div>
         <div class="qa-btn" onclick="needAdmin('modalVente')"><div class="qa-icon">➕🏠</div><div class="qa-lbl">Maison à Vendre</div></div>
@@ -638,9 +638,9 @@ tbody td{padding:10px 12px}
       <div class="grid2">
         <div class="card"><div class="card-title">Activité Récente</div><div id="act-list"><div style="text-align:center;padding:30px;color:var(--gy);font-size:0.85rem">📭 Aucune activité</div></div></div>
         <div class="card"><div class="card-title">Répartition des Biens</div>
-          <div class="bar-row"><div class="bar-info"><span style="font-size:0.78rem">Parcelles disponibles</span><span id="b1p" style="font-size:0.78rem">0%</span></div><div class="bar-track"><div id="b1" class="bar-fill" style="background:var(--or);width:0%"></div></div></div>
-          <div class="bar-row"><div class="bar-info"><span style="font-size:0.78rem">Lots disponibles</span><span id="b2p" style="font-size:0.78rem">0%</span></div><div class="bar-track"><div id="b2" class="bar-fill" style="background:#9b59b6;width:0%"></div></div></div>
-          <div class="bar-row"><div class="bar-info"><span style="font-size:0.78rem">Parcelles vendues</span><span id="b3p" style="font-size:0.78rem">0%</span></div><div class="bar-track"><div id="b3" class="bar-fill" style="background:var(--rd);width:0%"></div></div></div>
+          <div class="bar-row"><div class="bar-info"><span style="font-size:0.78rem">Lots disponibles</span><span id="b1p" style="font-size:0.78rem">0%</span></div><div class="bar-track"><div id="b1" class="bar-fill" style="background:var(--or);width:0%"></div></div></div>
+          <div class="bar-row"><div class="bar-info"><span style="font-size:0.78rem">Parcelles disponibles</span><span id="b2p" style="font-size:0.78rem">0%</span></div><div class="bar-track"><div id="b2" class="bar-fill" style="background:#9b59b6;width:0%"></div></div></div>
+          <div class="bar-row"><div class="bar-info"><span style="font-size:0.78rem">Lots vendues</span><span id="b3p" style="font-size:0.78rem">0%</span></div><div class="bar-track"><div id="b3" class="bar-fill" style="background:var(--rd);width:0%"></div></div></div>
           <div class="bar-row"><div class="bar-info"><span style="font-size:0.78rem">Maisons libres</span><span id="b4p" style="font-size:0.78rem">0%</span></div><div class="bar-track"><div id="b4" class="bar-fill" style="background:var(--bl);width:0%"></div></div></div>
           <div class="bar-row"><div class="bar-info"><span style="font-size:0.78rem">Maisons louées</span><span id="b5p" style="font-size:0.78rem">0%</span></div><div class="bar-track"><div id="b5" class="bar-fill" style="background:var(--gr);width:0%"></div></div></div>
         </div>
@@ -661,7 +661,7 @@ tbody td{padding:10px 12px}
     <div class="page" id="page-recherche">
       <div class="search-hero">
         <h2>🔍 Rechercher un bien</h2>
-        <p>Trouvez votre terrain, maison ou lot idéal à Abengourou</p>
+        <p>Trouvez votre terrain, maison ou parcelle idéal à Abengourou</p>
         <div class="search-big">
           <input id="sr-query" placeholder="Quartier, référence, type..." oninput="searchBiens()">
           <button onclick="searchBiens()">Rechercher</button>
@@ -670,8 +670,8 @@ tbody td{padding:10px 12px}
       <div class="filter-bar">
         <span style="font-size:0.82rem;font-weight:700;color:var(--gy)">Filtrer :</span>
         <button class="filter-btn active" onclick="setFilter('tous',this)">🏠 Tous</button>
-        <button class="filter-btn" onclick="setFilter('terrains',this)">🗺️ Parcelles</button>
-        <button class="filter-btn" onclick="setFilter('lotissement',this)">🏗️ Lots</button>
+        <button class="filter-btn" onclick="setFilter('terrains',this)">🗺️ Lots</button>
+        <button class="filter-btn" onclick="setFilter('lotissement',this)">🏗️ Parcelles</button>
         <button class="filter-btn" onclick="setFilter('maisons',this)">🏘️ Locations</button>
         <button class="filter-btn" onclick="setFilter('ventes',this)">🏠 À Vendre</button>
       </div>
@@ -740,16 +740,16 @@ tbody td{padding:10px 12px}
 
     <!-- TERRAINS -->
     <div class="page" id="page-terrains">
-      <div class="page-header"><div class="page-title">🗺️ Parcelles & Lots</div><button class="btn btn-primary" onclick="needAdmin('modalTerrain')">+ Ajouter</button></div>
+      <div class="page-header"><div class="page-title">🗺️ Lots & Parcelles</div><button class="btn btn-primary" onclick="needAdmin('modalTerrain')">+ Ajouter</button></div>
       <div class="search-bar"><input id="s-terrains" placeholder="🔍 Rechercher..." oninput="filterTerrains()"><select id="f-terrains" onchange="filterTerrains()"><option value="">Tous statuts</option><option>Disponible</option><option>Vendu</option><option>Réservé</option></select></div>
-      <div class="card tbl-wrap"><table><thead><tr><th>#</th><th>Photos</th><th>Référence</th><th>Lot</th><th>Îlot</th><th>Localisation</th><th>Superficie</th><th>Type</th><th>Prix (FCFA)</th><th>Statut</th><th>Action</th></tr></thead><tbody id="tb-terrains"><tr><td colspan="11" style="text-align:center;padding:30px;color:var(--gy)">🗺️ Aucune parcelle</td></tr></tbody></table></div>
+      <div class="card tbl-wrap"><table><thead><tr><th>#</th><th>Photos</th><th>Référence</th><th>Lot</th><th>Îlot</th><th>Localisation</th><th>Superficie</th><th>Type</th><th>Prix (FCFA)</th><th>Statut</th><th>Action</th></tr></thead><tbody id="tb-terrains"><tr><td colspan="11" style="text-align:center;padding:30px;color:var(--gy)">🗺️ Aucune lot</td></tr></tbody></table></div>
     </div>
 
     <!-- LOTISSEMENT -->
     <div class="page" id="page-lotissement">
       <div class="page-header"><div class="page-title">🏗️ Lotissement</div><button class="btn btn-primary" onclick="needAdmin('modalLot')">+ Nouveau Lot</button></div>
-      <div class="search-bar"><input id="s-lots" placeholder="🔍 Rechercher..." oninput="filterLots()"><select id="f-lots" onchange="filterLots()"><option value="">Tous statuts</option><option>Disponible</option><option>Vendu</option><option>Réservé</option></select></div>
-      <div class="card tbl-wrap"><table><thead><tr><th>#</th><th>Photos</th><th>N° Lot</th><th>Îlot</th><th>Programme</th><th>Superficie</th><th>Prix (FCFA)</th><th>Statut</th><th>Acquéreur</th><th>Action</th></tr></thead><tbody id="tb-lots"><tr><td colspan="10" style="text-align:center;padding:30px;color:var(--gy)">🏗️ Aucun lot</td></tr></tbody></table></div>
+      <div class="search-bar"><input id="s-lots" placeholder="🔍 Rechercher..." oninput="filterParcelles()"><select id="f-lots" onchange="filterParcelles()"><option value="">Tous statuts</option><option>Disponible</option><option>Vendu</option><option>Réservé</option></select></div>
+      <div class="card tbl-wrap"><table><thead><tr><th>#</th><th>Photos</th><th>N° Lot</th><th>Îlot</th><th>Programme</th><th>Superficie</th><th>Prix (FCFA)</th><th>Statut</th><th>Acquéreur</th><th>Action</th></tr></thead><tbody id="tb-lots"><tr><td colspan="10" style="text-align:center;padding:30px;color:var(--gy)">🏗️ Aucune parcelle</td></tr></tbody></table></div>
     </div>
 
     <!-- MAISONS -->
@@ -801,7 +801,7 @@ tbody td{padding:10px 12px}
         <div class="page-title" style="margin-bottom:16px">📊 Rapports</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
           <div class="card" style="text-align:center"><div style="font-size:2rem">🗺️</div><div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.8rem;color:var(--or)" id="r-t">0</div><div style="font-size:0.8rem;color:var(--gy)">Total Terrains</div></div>
-          <div class="card" style="text-align:center"><div style="font-size:2rem">🏗️</div><div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.8rem;color:#9b59b6" id="r-l">0</div><div style="font-size:0.8rem;color:var(--gy)">Total Lots</div></div>
+          <div class="card" style="text-align:center"><div style="font-size:2rem">🏗️</div><div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.8rem;color:#9b59b6" id="r-l">0</div><div style="font-size:0.8rem;color:var(--gy)">Total Parcelles</div></div>
           <div class="card" style="text-align:center"><div style="font-size:2rem">💰</div><div style="font-family:'Playfair Display',serif;font-weight:900;font-size:1.2rem;color:var(--gr)" id="r-rev">0 FCFA</div><div style="font-size:0.8rem;color:var(--gy)">Total Encaissé</div></div>
         </div>
         <div class="card"><div class="card-title">Résumé</div><div id="r-content" style="color:var(--gy);font-size:0.85rem"></div></div>
@@ -812,8 +812,8 @@ tbody td{padding:10px 12px}
     <div class="page" id="page-admin">
       <div class="page-title" style="margin-bottom:16px">⚙️ Espace Administrateur</div>
       <div class="adm-stats">
-        <div class="adm-mini"><div class="val" id="a-t">0</div><div class="lbl">Parcelles</div></div>
-        <div class="adm-mini"><div class="val" id="a-l">0</div><div class="lbl">Lots</div></div>
+        <div class="adm-mini"><div class="val" id="a-t">0</div><div class="lbl">Lots</div></div>
+        <div class="adm-mini"><div class="val" id="a-l">0</div><div class="lbl">Parcelles</div></div>
         <div class="adm-mini"><div class="val" id="a-m">0</div><div class="lbl">Maisons</div></div>
         <div class="adm-mini"><div class="val" id="a-c">0</div><div class="lbl">Clients</div></div>
         <div class="adm-mini"><div class="val" id="a-p">0</div><div class="lbl">Paiements</div></div>
@@ -850,7 +850,7 @@ tbody td{padding:10px 12px}
           <p>Ces actions sont irréversibles. Supprimer des données de Supabase.</p>
           <div class="danger-btns">
             <button class="btn btn-danger btn-sm" onclick="resetData('terrains')">🗑️ Terrains</button>
-            <button class="btn btn-danger btn-sm" onclick="resetData('lotissement')">🗑️ Lots</button>
+            <button class="btn btn-danger btn-sm" onclick="resetData('lotissement')">🗑️ Parcelles</button>
             <button class="btn btn-danger btn-sm" onclick="resetData('maisons')">🗑️ Maisons</button>
             <button class="btn btn-danger btn-sm" onclick="resetData('clients')">🗑️ Clients</button>
             <button class="btn btn-danger btn-sm" onclick="resetData('paiements')">🗑️ Paiements</button>
@@ -896,7 +896,7 @@ tbody td{padding:10px 12px}
   <div class="mn-items">
     <button class="mn-item active" onclick="goPage('dashboard',this)"><span class="mn-ico">🏠</span>Accueil</button>
     <button class="mn-item" onclick="goPage('recherche',this)"><span class="mn-ico">🔍</span>Chercher</button>
-    <button class="mn-item" onclick="goPage('terrains',this)"><span class="mn-ico">🗺️</span>Parcelles</button>
+    <button class="mn-item" onclick="goPage('terrains',this)"><span class="mn-ico">🗺️</span>Lots</button>
     <button class="mn-item" onclick="goPage('maisons',this)"><span class="mn-ico">🏘️</span>Maisons</button>
     <button class="mn-item" onclick="openAdmin('page')"><span class="mn-ico">🔐</span>Admin</button>
   </div>
@@ -972,7 +972,7 @@ function goPage(id,el){
   if(pg)pg.classList.add('active');
   if(el)el.classList.add('active');
   if(id==='terrains')renderTerrains();
-  if(id==='lotissement')renderLots();
+  if(id==='lotissement')renderParcelles();
   if(id==='maisons')renderMaisons();
   if(id==='ventes')renderVentes();
   if(id==='rapports')renderRapports();
@@ -1215,7 +1215,7 @@ function updateAdminStats(){
     if(el)el.textContent=[DB.terrains.length,DB.lotissement.length,DB.maisons.length,DB.clients.length,DB.paiements.length,rev.toLocaleString()+' FCFA'][i];
   });
 }
-function renderAll(){renderTerrains();renderLots();renderMaisons();renderVentes();renderClients();renderPaiements();renderActivity();}
+function renderAll(){renderTerrains();renderParcelles();renderMaisons();renderVentes();renderClients();renderPaiements();renderActivity();}
 
 // ===== TERRAINS =====
 async function saveTerrain(){
@@ -1228,10 +1228,10 @@ async function saveTerrain(){
     var res=await db_insert('terrains',item);
     if(res&&res.length>0){
       DB.terrains=await db_get('terrains');
-      await addActivity('Parcelle ajoutée : <strong>'+item.ref+'</strong>');
-      sendNotification('Nouveau parcelle ajoutée', 'Référence: '+item.ref+' | Localisation: '+item.loc+' | Prix: '+item.prix+' FCFA | Statut: '+item.statut);
+      await addActivity('Lot ajoutée : <strong>'+item.ref+'</strong>');
+      sendNotification('Nouveau lot ajoutée', 'Référence: '+item.ref+' | Localisation: '+item.loc+' | Prix: '+item.prix+' FCFA | Statut: '+item.statut);
       updateStats();renderTerrains();closeModal('modalTerrain');
-      toast('✅ Parcelle enregistrée!','ok');
+      toast('✅ Lot enregistrée!','ok');
       ['t-ref','t-loc','t-sup','t-prix','t-lot','t-ilot','t-notes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
     } else {
       toast('❌ Erreur enregistrement','err');
@@ -1242,7 +1242,7 @@ async function saveTerrain(){
 }
 function renderTerrains(data){
   data=data||DB.terrains;var tb=document.getElementById('tb-terrains');if(!tb)return;
-  if(!data.length){tb.innerHTML='<tr><td colspan="11" style="text-align:center;padding:30px;color:var(--gy)">🗺️ Aucune parcelle</td></tr>';return;}
+  if(!data.length){tb.innerHTML='<tr><td colspan="11" style="text-align:center;padding:30px;color:var(--gy)">🗺️ Aucune lot</td></tr>';return;}
   tb.innerHTML=data.map(function(t,i){
     var sc=t.statut==='Disponible'?'b-dispo':t.statut==='Vendu'?'b-vendu':'b-reserve';
     return '<tr><td>'+(i+1)+'</td><td>'+thumbs(t.photos)+'</td><td><strong>'+(t.ref||'')+'</strong></td><td>'+(t.lot||'—')+'</td><td>'+(t.ilot||'—')+'</td><td>'+(t.loc||'—')+'</td><td>'+(t.sup?Number(t.sup).toLocaleString()+' m²':'—')+'</td><td>'+(t.type||'—')+'</td><td>'+(t.prix?formatPrix(t.prix):'-')+'</td><td><span class="badge '+sc+'">'+t.statut+'</span></td><td><button class="btn btn-danger btn-sm" onclick="delTerrain('+t.id+')">🗑️</button></td></tr>';
@@ -1256,15 +1256,15 @@ async function saveLot(){
   var photos=getGallery('l-gallery');
   var safePhotos=photos.slice(0,3);
   var item={num:document.getElementById('l-num').value,ilot:document.getElementById('l-ilot').value,programme:document.getElementById('l-prog').value,zone:document.getElementById('l-zone').value,sup:document.getElementById('l-sup').value||null,prix:document.getElementById('l-prix').value||null,statut:document.getElementById('l-statut').value,acquereur:document.getElementById('l-acq').value,notes:document.getElementById('l-notes').value,photos:safePhotos};
-  if(!item.num){alert('N° Lot obligatoire!');return;}
+  if(!item.num){alert('N° Parcelle obligatoire!');return;}
   toast('💾 Enregistrement...','ok');
   try{
     var res=await db_insert('lotissement',item);
     if(res&&res.length>0){
       DB.lotissement=await db_get('lotissement');
-      await addActivity('Lot ajouté : <strong>'+item.num+'</strong>');
-      updateStats();renderLots();closeModal('modalLot');
-      toast('✅ Lot enregistré!','ok');
+      await addActivity('Parcelle ajouté : <strong>'+item.num+'</strong>');
+      updateStats();renderParcelles();closeModal('modalLot');
+      toast('✅ Parcelle enregistré!','ok');
       ['l-num','l-ilot','l-prog','l-zone','l-sup','l-prix','l-acq','l-notes'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
     } else {
       toast('❌ Erreur enregistrement','err');
@@ -1273,16 +1273,16 @@ async function saveLot(){
     toast('❌ Erreur: '+e.message,'err');
   }
 }
-function renderLots(data){
+function renderParcelles(data){
   data=data||DB.lotissement;var tb=document.getElementById('tb-lots');if(!tb)return;
-  if(!data.length){tb.innerHTML='<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--gy)">🏗️ Aucun lot</td></tr>';return;}
+  if(!data.length){tb.innerHTML='<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--gy)">🏗️ Aucune parcelle</td></tr>';return;}
   tb.innerHTML=data.map(function(l,i){
     var sc=l.statut==='Disponible'?'b-dispo':l.statut==='Vendu'?'b-vendu':'b-reserve';
     return '<tr><td>'+(i+1)+'</td><td>'+thumbs(l.photos)+'</td><td><strong>'+(l.num||'')+'</strong></td><td>'+(l.ilot||'—')+'</td><td>'+(l.programme||'—')+'</td><td>'+(l.sup?Number(l.sup).toLocaleString()+' m²':'—')+'</td><td>'+(l.prix?formatPrix(l.prix):'-')+'</td><td><span class="badge '+sc+'">'+l.statut+'</span></td><td>'+(l.acquereur||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="delLot('+l.id+')">🗑️</button></td></tr>';
   }).join('');
 }
-async function delLot(id){if(!confirm('Supprimer?'))return;await db_delete('lotissement',id);DB.lotissement=await db_get('lotissement');updateStats();renderLots();toast('✅ Supprimé','ok');}
-function filterLots(){var q=document.getElementById('s-lots').value.toLowerCase();var st=document.getElementById('f-lots').value;renderLots(DB.lotissement.filter(function(l){return(!q||(l.num+l.programme+l.zone).toLowerCase().includes(q))&&(!st||l.statut===st);}));}
+async function delLot(id){if(!confirm('Supprimer?'))return;await db_delete('lotissement',id);DB.lotissement=await db_get('lotissement');updateStats();renderParcelles();toast('✅ Supprimé','ok');}
+function filterParcelles(){var q=document.getElementById('s-lots').value.toLowerCase();var st=document.getElementById('f-lots').value;renderParcelles(DB.lotissement.filter(function(l){return(!q||(l.num+l.programme+l.zone).toLowerCase().includes(q))&&(!st||l.statut===st);}));}
 
 // ===== MAISONS =====
 async function saveMaison(){
@@ -1450,7 +1450,7 @@ function searchBiens() {
   if(currentFilter === 'tous' || currentFilter === 'lotissement') {
     DB.lotissement.filter(function(l){return l.statut==='Disponible'}).forEach(function(l){
       if(!q || (l.num+l.programme+l.zone).toLowerCase().includes(q)) {
-        results.push({cat:'lot', ico:'🏗️', type:'Lot de Lotissement', title:l.num, loc:l.zone||l.programme||'Abengourou', prix:l.prix, sup:l.sup, photos:l.photos, statut:l.statut});
+        results.push({cat:'lot', ico:'🏗️', type:'Parcelle de Lotissement', title:l.num, loc:l.zone||l.programme||'Abengourou', prix:l.prix, sup:l.sup, photos:l.photos, statut:l.statut});
       }
     });
   }
