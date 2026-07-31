@@ -325,6 +325,14 @@ tbody td{padding:10px 12px}
 .filter-btn.active{background:var(--bl);color:white;border-color:var(--bl)}
 .filter-btn:hover{border-color:var(--bl);color:var(--bl)}
 .biens-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.view-toggle{display:flex;gap:8px;margin-left:auto}
+.view-toggle button{padding:8px 14px;border-radius:8px;border:1.5px solid var(--bl);background:white;color:var(--bl);font-size:0.78rem;font-weight:700;cursor:pointer}
+.view-toggle button.active{background:var(--bl);color:white}
+.biens-map-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px}
+.bien-map-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.06)}
+.bien-map-card iframe{width:100%;height:180px;border:none;display:block}
+.bien-map-body{padding:12px 14px}
+@media(max-width:768px){.biens-map-grid{grid-template-columns:1fr}}
 .bien-card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:transform 0.2s,box-shadow 0.2s;cursor:pointer}
 .bien-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.12)}
 .bien-img{width:100%;height:160px;object-fit:cover;background:linear-gradient(135deg,#f0f4ff,#e8f0fe)}
@@ -692,8 +700,13 @@ tbody td{padding:10px 12px}
         <button class="filter-btn" onclick="setFilter('lotissement',this)">🏗️ Parcelles</button>
         <button class="filter-btn" onclick="setFilter('maisons',this)">🏘️ Locations</button>
         <button class="filter-btn" onclick="setFilter('ventes',this)">🏠 À Vendre</button>
+        <div class="view-toggle">
+          <button id="btn-vue-liste" class="active" onclick="setVue('liste')">📋 Liste</button>
+          <button id="btn-vue-carte" onclick="setVue('carte')">🗺️ Carte</button>
+        </div>
       </div>
       <div id="biens-results" class="biens-grid"></div>
+      <div id="biens-map" class="biens-map-grid" style="display:none"></div>
       <div class="contact-cta">
         <h3>🤝 Vous avez trouvé votre bien ?</h3>
         <p>Contactez-nous maintenant pour plus d'informations ou pour visiter</p>
@@ -1518,11 +1531,16 @@ function searchBiens() {
   var c = document.getElementById('biens-results');
   if(!c) return;
 
+  window.lastBienResults = results;
+
   if(!results.length) {
     c.className = '';
     c.innerHTML = '<div class="no-results"><div class="nr-icon">🔍</div><div class="nr-title">Aucun bien trouvé</div><p style="color:var(--gy);font-size:0.85rem">Essayez avec d\'autres mots clés ou contactez-nous directement</p></div>';
+    document.getElementById('biens-map').innerHTML = '<div class="no-results"><div class="nr-icon">🗺️</div><div class="nr-title">Aucun bien à afficher sur la carte</div></div>';
     return;
   }
+
+  window.lastBienResults = results;
 
   c.className = 'biens-grid';
   c.innerHTML = results.map(function(b) {
@@ -1541,6 +1559,54 @@ function searchBiens() {
       +'<div class="bien-loc">📍 '+b.loc+'</div>'
       +'<div class="bien-prix">'+prixStr+'</div>'
       +(details?'<div class="bien-footer"><div class="bien-details">'+details+'</div><span class="badge b-dispo">Disponible</span></div>':'')
+      +'</div>'
+      +'</div>';
+  }).join('');
+
+  renderCarteBiens();
+}
+
+function setVue(mode){
+  var lst = document.getElementById('biens-results');
+  var map = document.getElementById('biens-map');
+  var bL = document.getElementById('btn-vue-liste');
+  var bC = document.getElementById('btn-vue-carte');
+  if(mode === 'carte'){
+    lst.style.display = 'none';
+    map.style.display = 'grid';
+    bL.classList.remove('active');
+    bC.classList.add('active');
+    renderCarteBiens();
+  } else {
+    lst.style.display = 'grid';
+    map.style.display = 'none';
+    bC.classList.remove('active');
+    bL.classList.add('active');
+  }
+}
+
+function renderCarteBiens(){
+  var m = document.getElementById('biens-map');
+  if(!m) return;
+  var results = window.lastBienResults || [];
+  if(!results.length){
+    m.innerHTML = '<div class="no-results"><div class="nr-icon">🗺️</div><div class="nr-title">Aucun bien à afficher sur la carte</div></div>';
+    return;
+  }
+  m.innerHTML = results.map(function(b){
+    var lieu = encodeURIComponent((b.loc || 'Abengourou') + ', Côte d\'Ivoire');
+    var prixStr = b.prix ? formatPrix(b.prix)+(b.isLoyer?'/mois':'') : 'Prix sur demande';
+    return '<div class="bien-map-card">'
+      +'<iframe src="https://maps.google.com/maps?q='+lieu+'&z=13&output=embed" loading="lazy"></iframe>'
+      +'<div class="bien-map-body">'
+      +'<div class="bien-type">'+b.type+'</div>'
+      +'<div class="bien-title">'+b.title+'</div>'
+      +'<div class="bien-loc">📍 '+b.loc+'</div>'
+      +'<div class="bien-prix">'+prixStr+'</div>'
+      +'<div style="display:flex;gap:8px;margin-top:8px">'
+      +'<a href="https://www.google.com/maps/search/?api=1&query='+lieu+'" target="_blank" style="flex:1;text-align:center;padding:8px;background:var(--bg);border-radius:8px;font-size:0.75rem;font-weight:700;color:var(--bl);text-decoration:none">🧭 Itinéraire</a>'
+      +'<button onclick="contactBien(\''+b.title+'\')" style="flex:1;padding:8px;background:var(--bl);color:white;border:none;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer">💬 Contacter</button>'
+      +'</div>'
       +'</div>'
       +'</div>';
   }).join('');
