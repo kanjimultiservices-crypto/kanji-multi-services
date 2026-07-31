@@ -385,6 +385,24 @@ tbody td{padding:10px 12px}
 </div>
 
 <!-- MODAL TERRAIN -->
+<!-- MODAL PRISE DE RENDEZ-VOUS (public) -->
+<div class="overlay" id="modalRdv">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-head"><h3>📅 Prendre rendez-vous</h3><button class="modal-close" onclick="closeModal('modalRdv')">✕</button></div>
+    <p style="color:var(--gy);font-size:0.85rem;margin-bottom:16px">Remplissez ce formulaire pour planifier une visite. Nous vous recontacterons pour confirmer.</p>
+    <div class="form-grid">
+      <div class="form-group full"><label>Nom complet *</label><input id="rdv-nom" placeholder="Votre nom"></div>
+      <div class="form-group full"><label>Téléphone *</label><input id="rdv-tel" placeholder="07 00 00 00 00"></div>
+      <div class="form-group"><label>Type de bien</label><select id="rdv-type"><option>Lot / Terrain</option><option>Parcelle lotissement</option><option>Maison en location</option><option>Maison à vendre</option><option>Je ne sais pas encore</option></select></div>
+      <div class="form-group"><label>Référence (si connue)</label><input id="rdv-ref" placeholder="Ex: LOT-001"></div>
+      <div class="form-group"><label>Date souhaitée *</label><input type="date" id="rdv-date"></div>
+      <div class="form-group"><label>Heure souhaitée</label><input type="time" id="rdv-heure"></div>
+      <div class="form-group full"><label>Message (optionnel)</label><textarea id="rdv-msg" placeholder="Précisions sur votre demande..."></textarea></div>
+    </div>
+    <div class="form-actions"><button class="btn btn-primary" onclick="envoyerRdv()">✔ Confirmer via WhatsApp</button><button class="btn btn-outline" onclick="closeModal('modalRdv')">Annuler</button></div>
+  </div>
+</div>
+
 <div class="overlay" id="modalTerrain">
   <div class="modal">
     <div class="modal-head"><h3>🗺️ Nouvelle Lot</h3><button class="modal-close" onclick="closeModal('modalTerrain')">✕</button></div>
@@ -680,6 +698,7 @@ tbody td{padding:10px 12px}
         <h3>🤝 Vous avez trouvé votre bien ?</h3>
         <p>Contactez-nous maintenant pour plus d'informations ou pour visiter</p>
         <div class="cta-btns">
+          <button class="cta-btn cta-rdv" onclick="openModal('modalRdv')" style="border:none;cursor:pointer;font:inherit">📅 Prendre rendez-vous</button>
           <a class="cta-btn cta-wa" href="https://wa.me/2250799630206" target="_blank">💬 WhatsApp</a>
           <a class="cta-btn cta-tel" href="tel:+2252731932937">📞 Appeler</a>
         </div>
@@ -1122,6 +1141,33 @@ function changePwd(){
 
 // ===== MODALS =====
 function openModal(id){document.getElementById(id).classList.add('show');}
+
+function envoyerRdv(){
+  var nom = document.getElementById('rdv-nom').value.trim();
+  var tel = document.getElementById('rdv-tel').value.trim();
+  var type = document.getElementById('rdv-type').value;
+  var ref = document.getElementById('rdv-ref').value.trim();
+  var date = document.getElementById('rdv-date').value;
+  var heure = document.getElementById('rdv-heure').value;
+  var msg = document.getElementById('rdv-msg').value.trim();
+
+  if(!nom || !tel || !date){
+    alert('Merci de renseigner au minimum votre nom, votre téléphone et la date souhaitée.');
+    return;
+  }
+
+  var texte = '📅 *Demande de rendez-vous KANJI MULTI SERVICES*%0A%0A';
+  texte += '👤 Nom : ' + encodeURIComponent(nom) + '%0A';
+  texte += '📞 Téléphone : ' + encodeURIComponent(tel) + '%0A';
+  texte += '🏠 Type de bien : ' + encodeURIComponent(type) + '%0A';
+  if(ref) texte += '🔖 Référence : ' + encodeURIComponent(ref) + '%0A';
+  texte += '📆 Date souhaitée : ' + encodeURIComponent(date) + '%0A';
+  if(heure) texte += '🕐 Heure souhaitée : ' + encodeURIComponent(heure) + '%0A';
+  if(msg) texte += '💬 Message : ' + encodeURIComponent(msg) + '%0A';
+
+  window.open('https://wa.me/2250799630206?text=' + texte, '_blank');
+  closeModal('modalRdv');
+}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 document.addEventListener('click',function(e){if(e.target.classList.contains('overlay'))e.target.classList.remove('show');});
 
