@@ -582,6 +582,7 @@ tbody td{padding:10px 12px}
     <div class="nav-item active" onclick="goPage('dashboard',this)">🏠 Tableau de Bord</div>
     <div class="nav-item" onclick="goPage('about',this)">🏢 Qui sommes-nous</div>
     <div class="nav-item" onclick="goPage('recherche',this)">🔍 Rechercher un bien</div>
+    <div class="nav-item" onclick="goPage('conseils',this)">🛡️ Conseils</div>
     <div class="sb-section">Gestion</div>
     <div class="nav-item" onclick="goPage('terrains',this)">🗺️ Lots & Parcelles</div>
     <div class="nav-item" onclick="goPage('lotissement',this)">🏗️ Lotissement</div>
@@ -712,6 +713,49 @@ tbody td{padding:10px 12px}
         <p>Contactez-nous maintenant pour plus d'informations ou pour visiter</p>
         <div class="cta-btns">
           <button class="cta-btn cta-rdv" onclick="openModal('modalRdv')" style="border:none;cursor:pointer;font:inherit">📅 Prendre rendez-vous</button>
+          <a class="cta-btn cta-wa" href="https://wa.me/2250799630206" target="_blank">💬 WhatsApp</a>
+          <a class="cta-btn cta-tel" href="tel:+2252731932937">📞 Appeler</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONSEILS ACHETEUR -->
+    <div class="page" id="page-conseils">
+      <div class="about-hero" style="background:linear-gradient(135deg,var(--dk),var(--bl))">
+        <div class="ah-text" style="text-align:center;width:100%">
+          <div class="ah-name" style="font-size:1.6rem">🛡️ Guide de l'acheteur</div>
+          <div class="ah-slogan">Investissez en toute confiance, évitez les arnaques</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title" style="color:var(--gr)">✅ Comment bien investir</div>
+        <ul style="color:var(--dk);font-size:0.88rem;line-height:2;padding-left:20px;margin-top:10px">
+          <li>Vérifiez toujours le titre foncier (ACD, ADP ou lettre d'attribution officielle)</li>
+          <li>Visitez le terrain vous-même avant tout paiement</li>
+          <li>Exigez un reçu officiel avec cachet de l'entreprise</li>
+          <li>Vérifiez que le vendeur est bien le propriétaire légitime du bien</li>
+          <li>Faites-vous accompagner par un professionnel agréé (agence, notaire)</li>
+          <li>Demandez toujours un contrat écrit avant tout engagement financier</li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title" style="color:var(--rd)">⚠️ Signaux d'alerte à éviter</div>
+        <ul style="color:var(--dk);font-size:0.88rem;line-height:2;padding-left:20px;margin-top:10px">
+          <li>Un prix largement en dessous du prix du marché</li>
+          <li>Un vendeur pressé, sans documents à montrer</li>
+          <li>Un paiement exigé uniquement en espèces, sans reçu</li>
+          <li>Une visite du terrain impossible ou toujours reportée</li>
+          <li>Un refus de fournir un reçu ou un contrat écrit</li>
+          <li>Des documents qui semblent falsifiés ou incohérents</li>
+        </ul>
+      </div>
+
+      <div class="card" style="background:linear-gradient(135deg,var(--bl),#1e4db5);text-align:center;padding:24px 20px">
+        <div style="color:white;font-size:1.05rem;font-weight:700;margin-bottom:6px">🤝 Un doute sur un terrain ?</div>
+        <div style="color:rgba(255,255,255,0.85);font-size:0.85rem;margin-bottom:16px">Contactez KANJI MULTI SERVICES avant tout paiement, nous vérifions avec vous.</div>
+        <div class="cta-btns" style="justify-content:center">
           <a class="cta-btn cta-wa" href="https://wa.me/2250799630206" target="_blank">💬 WhatsApp</a>
           <a class="cta-btn cta-tel" href="tel:+2252731932937">📞 Appeler</a>
         </div>
