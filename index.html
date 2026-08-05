@@ -1351,7 +1351,7 @@ function renderTerrains(data){
     return '<tr><td>'+(i+1)+'</td><td>'+thumbs(t.photos)+'</td><td><strong>'+(t.ref||'')+'</strong></td><td>'+(t.lot||'—')+'</td><td>'+(t.ilot||'—')+'</td><td>'+(t.loc||'—')+'</td><td>'+(t.sup?Number(t.sup).toLocaleString()+' m²':'—')+'</td><td>'+(t.type||'—')+'</td><td>'+(t.prix?formatPrix(t.prix):'-')+'</td><td><span class="badge '+sc+'">'+t.statut+'</span></td><td><button class="btn btn-danger btn-sm" onclick="delTerrain('+t.id+')">🗑️</button></td></tr>';
   }).join('');
 }
-async function delTerrain(id){if(!confirm('Supprimer?'))return;await db_delete('terrains',id);DB.terrains=await db_get('terrains');updateStats();renderTerrains();toast('✅ Supprimé','ok');}
+async function delTerrain(id){if(!isAdmin){toast('⛔ Accès réservé aux administrateurs','error');return;}if(!confirm('Supprimer?'))return;await db_delete('terrains',id);DB.terrains=await db_get('terrains');updateStats();renderTerrains();toast('✅ Supprimé','ok');}
 function filterTerrains(){var q=document.getElementById('s-terrains').value.toLowerCase();var st=document.getElementById('f-terrains').value;renderTerrains(DB.terrains.filter(function(t){return(!q||(t.ref+t.loc+t.lot+t.ilot).toLowerCase().includes(q))&&(!st||t.statut===st);}));}
 
 // ===== LOTISSEMENT =====
@@ -1384,7 +1384,7 @@ function renderParcelles(data){
     return '<tr><td>'+(i+1)+'</td><td>'+thumbs(l.photos)+'</td><td><strong>'+(l.num||'')+'</strong></td><td>'+(l.ilot||'—')+'</td><td>'+(l.programme||'—')+'</td><td>'+(l.sup?Number(l.sup).toLocaleString()+' m²':'—')+'</td><td>'+(l.prix?formatPrix(l.prix):'-')+'</td><td><span class="badge '+sc+'">'+l.statut+'</span></td><td>'+(l.acquereur||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="delLot('+l.id+')">🗑️</button></td></tr>';
   }).join('');
 }
-async function delLot(id){if(!confirm('Supprimer?'))return;await db_delete('lotissement',id);DB.lotissement=await db_get('lotissement');updateStats();renderParcelles();toast('✅ Supprimé','ok');}
+async function delLot(id){if(!isAdmin){toast('⛔ Accès réservé aux administrateurs','error');return;}if(!confirm('Supprimer?'))return;await db_delete('lotissement',id);DB.lotissement=await db_get('lotissement');updateStats();renderParcelles();toast('✅ Supprimé','ok');}
 function filterParcelles(){var q=document.getElementById('s-lots').value.toLowerCase();var st=document.getElementById('f-lots').value;renderParcelles(DB.lotissement.filter(function(l){return(!q||(l.num+l.programme+l.zone).toLowerCase().includes(q))&&(!st||l.statut===st);}));}
 
 // ===== MAISONS =====
@@ -1418,7 +1418,7 @@ function renderMaisons(data){
     return '<tr><td>'+(i+1)+'</td><td>'+thumbs(m.photos)+'</td><td><strong>'+(m.ref||'')+'</strong></td><td>'+(m.adresse||'—')+'</td><td>'+(m.type||'—')+'</td><td>'+(m.pieces||'—')+'</td><td>'+(m.loyer?formatPrix(m.loyer).replace(' FCFA',' FCFA/mois'):'—')+'</td><td><span class="badge '+sc+'">'+m.statut+'</span></td><td>'+(m.locataire||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="delMaison('+m.id+')">🗑️</button></td></tr>';
   }).join('');
 }
-async function delMaison(id){if(!confirm('Supprimer?'))return;await db_delete('maisons',id);DB.maisons=await db_get('maisons');updateStats();renderMaisons();toast('✅ Supprimé','ok');}
+async function delMaison(id){if(!isAdmin){toast('⛔ Accès réservé aux administrateurs','error');return;}if(!confirm('Supprimer?'))return;await db_delete('maisons',id);DB.maisons=await db_get('maisons');updateStats();renderMaisons();toast('✅ Supprimé','ok');}
 function filterMaisons(){var q=document.getElementById('s-maisons').value.toLowerCase();var st=document.getElementById('f-maisons').value;renderMaisons(DB.maisons.filter(function(m){return(!q||(m.ref+m.adresse+(m.locataire||'')).toLowerCase().includes(q))&&(!st||m.statut===st);}));}
 
 // ===== VENTES =====
@@ -1451,7 +1451,7 @@ function renderVentes(data){
     return '<tr><td>'+(i+1)+'</td><td>'+thumbs(v.photos)+'</td><td><strong>'+(v.ref||'')+'</strong></td><td>'+(v.adresse||'—')+'</td><td>'+(v.type||'—')+'</td><td>'+(v.pieces||'—')+'</td><td>'+(v.prix?formatPrix(v.prix):'—')+'</td><td><span class="badge '+sc+'">'+v.statut+'</span></td><td><button class="btn btn-danger btn-sm" onclick="delVente('+v.id+')">🗑️</button></td></tr>';
   }).join('');
 }
-async function delVente(id){if(!confirm('Supprimer?'))return;await db_delete('ventes',id);DB.ventes=await db_get('ventes');updateStats();renderVentes();toast('✅ Supprimé','ok');}
+async function delVente(id){if(!isAdmin){toast('⛔ Accès réservé aux administrateurs','error');return;}if(!confirm('Supprimer?'))return;await db_delete('ventes',id);DB.ventes=await db_get('ventes');updateStats();renderVentes();toast('✅ Supprimé','ok');}
 function filterVentes(){var q=document.getElementById('s-ventes').value.toLowerCase();renderVentes(DB.ventes.filter(function(v){return(v.ref+v.adresse).toLowerCase().includes(q);}));}
 
 // ===== CLIENTS =====
@@ -1472,7 +1472,7 @@ function renderClients(data){
     return '<tr><td>'+(i+1)+'</td><td><strong>'+(c.nom||'')+' '+(c.prenom||'')+'</strong></td><td>'+(c.tel||'—')+'</td><td>'+(c.email||'—')+'</td><td>'+(c.type||'—')+'</td><td><span class="badge '+sc+'">'+c.statut+'</span></td><td><button class="btn btn-danger btn-sm" onclick="delClient('+c.id+')">🗑️</button></td></tr>';
   }).join('');
 }
-async function delClient(id){if(!confirm('Supprimer?'))return;await db_delete('clients',id);DB.clients=await db_get('clients');renderClients();updateAdminStats();toast('✅ Supprimé','ok');}
+async function delClient(id){if(!isAdmin){toast('⛔ Accès réservé aux administrateurs','error');return;}if(!confirm('Supprimer?'))return;await db_delete('clients',id);DB.clients=await db_get('clients');renderClients();updateAdminStats();toast('✅ Supprimé','ok');}
 function filterClients(){var q=document.getElementById('s-clients').value.toLowerCase();renderClients(DB.clients.filter(function(c){return(c.nom+c.prenom+(c.tel||'')).toLowerCase().includes(q);}));}
 
 // ===== PAIEMENTS =====
@@ -1494,6 +1494,7 @@ function renderPaiements(data){
 
 // ===== DELETE PAIEMENT =====
 async function delPaiement(id){
+  if(!isAdmin){toast('⛔ Accès réservé aux administrateurs','error');return;}
   if(!confirm('Supprimer ce paiement ?'))return;
   await db_delete('paiements',id);
   DB.paiements=await db_get('paiements');
